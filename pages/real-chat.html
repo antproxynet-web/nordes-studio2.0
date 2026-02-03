@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>Chat - Nordes</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.min.js"></script>
+<style>
+:root {
+  --bg-header: #121b22;
+  --bg-chat: #0b141a;
+  --bg-input: #202c33;
+  --text-primary: #e9edef;
+  --text-secondary: #8696a0;
+  --msg-me: #005c4b;
+  --msg-other: #202c33;
+  --accent: #00a884;
+  --tick-read: #2ecc71; /* Verde claro para lido conforme solicitado */
+  --tick-sent: #8696a0; /* Cinza para enviado/recebido */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--bg-chat);
+  background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); /* Wallpaper WhatsApp */
+  background-blend-mode: overlay;
+  color: var(--text-primary);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+header {
+  background: var(--bg-header);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 1000;
+  height: 60px;
+}
+
+.back-btn {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  cursor: pointer;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #2a3942;
+}
+
+.user-details h2 {
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.verified-icon {
+  color: #009DFF;
+  font-size: 14px;
+}
+
+.user-status {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.user-status.online {
+  color: var(--accent);
+}
+
+.messages-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  scroll-behavior: smooth;
+}
+
+.message {
+  max-width: 85%;
+  padding: 6px 10px 8px 10px;
+  border-radius: 8px;
+  font-size: 14.5px;
+  line-height: 1.4;
+  position: relative;
+  word-wrap: break-word;
+  box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
+}
+
+.message.me {
+  align-self: flex-end;
+  background: var(--msg-me);
+  border-top-right-radius: 0;
+}
+
+.message.other {
+  align-self: flex-start;
+  background: var(--msg-other);
+  border-top-left-radius: 0;
+}
+
+.message-content {
+  margin-right: 45px;
+}
+
+.message-meta {
+  position: absolute;
+  bottom: 4px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.message.me .message-meta {
+  color: rgba(255,255,255,0.6);
+}
+
+.ticks {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.ticks i {
+  margin-left: -8px;
+}
+
+.ticks i:first-child {
+  margin-left: 0;
+}
+
+.ticks.read {
+  color: var(--tick-read);
+}
+
+.ticks.sent {
+  color: rgba(255,255,255,0.6);
+}
+
+.date-divider {
+  align-self: center;
+  background: #182229;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 12px 0;
+  text-transform: uppercase;
+  box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
+}
+
+.input-area {
+  background: var(--bg-header);
+  padding: 10px 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.input-wrapper {
+  flex: 1;
+  background: var(--bg-input);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  min-height: 45px;
+}
+
+.input-wrapper i {
+  color: var(--text-secondary);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.message-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 10px 12px;
+  color: var(--text-primary);
+  font-size: 16px;
+  outline: none;
+  max-height: 120px;
+}
+
+.send-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.send-btn:active {
+  transform: scale(0.9);
+}
+
+.send-btn:disabled {
+  background: #2a3942;
+  color: var(--text-secondary);
+}
+
+/* Scrollbar */
+.messages-container::-webkit-scrollbar {
+  width: 6px;
+}
+.messages-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="chat.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+  <div class="user-info" id="userInfo">
+    <img src="../assets/images/icons/default-avatar.png" class="avatar" id="userAvatar">
+    <div class="user-details">
+      <h2 id="userName">Carregando...</h2>
+      <span class="user-status" id="userStatus">offline</span>
+    </div>
+  </div>
+  <div style="display: flex; gap: 20px; color: var(--text-secondary); font-size: 18px; margin-left: 10px;">
+    <i class="fa-solid fa-video"></i>
+    <i class="fa-solid fa-phone"></i>
+    <i class="fa-solid fa-ellipsis-vertical"></i>
+  </div>
+</header>
+
+<div class="messages-container" id="messagesContainer"></div>
+
+<div class="input-area">
+  <div class="input-wrapper">
+    <i class="fa-regular fa-face-smile"></i>
+    <input type="text" class="message-input" id="messageInput" placeholder="Mensagem" autocomplete="off">
+    <label for="fileInput" style="cursor: pointer; display: flex; align-items: center;">
+      <i class="fa-solid fa-paperclip"></i>
+    </label>
+    <input type="file" id="fileInput" style="display: none;">
+    <i class="fa-solid fa-camera" style="margin-left: 15px; cursor: pointer;" onclick="document.getElementById('fileInput').click()"></i>
+  </div>
+  <button class="send-btn" id="sendBtn" disabled>
+    <i class="fa-solid fa-paper-plane" id="sendIcon"></i>
+  </button>
+</div>
+
+<!-- Modal de Preview de Upload -->
+<div id="uploadPreviewModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
+  <div style="width: 100%; max-width: 500px; background: var(--bg-header); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;">
+    <div style="padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--bg-input);">
+      <h3 style="font-size: 16px;">Enviar arquivo</h3>
+      <i class="fa-solid fa-xmark" style="cursor: pointer; font-size: 20px;" onclick="closeUploadPreview()"></i>
+    </div>
+    <div id="previewContent" style="padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 200px; max-height: 400px; overflow: hidden;">
+      <!-- Preview dinâmico aqui -->
+    </div>
+    <div style="padding: 15px; background: var(--bg-chat); display: flex; gap: 10px; align-items: center;">
+      <input type="text" id="fileCaption" placeholder="Adicione uma legenda..." style="flex: 1; background: var(--bg-input); border: none; padding: 12px 15px; border-radius: 24px; color: white; outline: none;">
+      <button onclick="confirmUpload()" style="width: 45px; height: 45px; border-radius: 50%; background: var(--accent); border: none; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+        <i class="fa-solid fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/auth-guard.js"></script>
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const otherUserId = urlParams.get('user_id') || urlParams.get('id');
+const messagesContainer = document.getElementById('messagesContainer');
+const messageInput = document.getElementById('messageInput');
+const sendBtn = document.getElementById('sendBtn');
+const sendIcon = document.getElementById('sendIcon');
+const fileInput = document.getElementById('fileInput');
+const uploadPreviewModal = document.getElementById('uploadPreviewModal');
+const previewContent = document.getElementById('previewContent');
+const fileCaption = document.getElementById('fileCaption');
+
+let selectedFile = null;
+
+if (!otherUserId || !authGuard.requireAuthentication()) {
+  window.location.href = 'chat.html';
+}
+
+const currentUserId = authGuard.getCurrentUser().id;
+const token = authGuard.getToken();
+let socket;
+let messages = [];
+
+function initSocket() {
+  socket = io({ query: { token: token } });
+
+  socket.on('connect', () => console.log('Conectado'));
+
+  socket.on('new_message', (msg) => {
+    if (msg.sender_id == otherUserId) {
+      messages.push(msg);
+      renderMessages(messages);
+      socket.emit('mark_read', { message_id: msg.id });
+    }
+  });
+
+  socket.on('message_sent', (msg) => {
+    if (msg.receiver_id == otherUserId) {
+      messages.push(msg);
+      renderMessages(messages);
+    }
+  });
+
+  socket.on('message_read', (data) => {
+    const msg = messages.find(m => m.id == data.message_id);
+    if (msg) {
+      msg.is_read = true;
+      renderMessages(messages);
+    }
+  });
+
+  socket.on('user_status', (data) => {
+    if (data.user_id == otherUserId) {
+      updateStatusUI(data.status === 'online');
+    }
+  });
+}
+
+function updateStatusUI(isOnline) {
+  const statusEl = document.getElementById('userStatus');
+  if (isOnline) {
+    statusEl.textContent = 'online';
+    statusEl.classList.add('online');
+  } else {
+    statusEl.textContent = 'visto por último hoje às ...';
+    statusEl.classList.remove('online');
+  }
+}
+
+async function loadUserInfo() {
+  try {
+    const response = await authGuard.authenticatedFetch('/api/chat/user/' + otherUserId);
+    if (response.ok) {
+      const user = await response.json();
+      const verifiedBadge = user.is_verified ? ' <i class="fa-solid fa-circle-check verified-icon"></i>' : '';
+      document.getElementById('userName').innerHTML = (user.name || `@${user.username}`) + verifiedBadge;
+      document.getElementById('userAvatar').src = authGuard.normalizePictureUrl(user.picture);
+      updateStatusUI(user.is_online);
+    }
+  } catch (error) {}
+}
+
+async function loadHistory() {
+  try {
+    const response = await authGuard.authenticatedFetch('/api/chat/messages/' + otherUserId);
+    if (response.ok) {
+      messages = await response.json();
+      renderMessages(messages);
+      setTimeout(() => { messagesContainer.scrollTop = messagesContainer.scrollHeight; }, 100);
+    }
+  } catch (error) {}
+}
+
+function renderMessages(msgs) {
+  const isAtBottom = messagesContainer.scrollTop + messagesContainer.clientHeight >= messagesContainer.scrollHeight - 100;
+
+  messagesContainer.innerHTML = msgs.map((msg, index) => {
+    const isMe = msg.sender_id === currentUserId;
+    const timestamp = msg.timestamp.endsWith('Z') ? msg.timestamp : msg.timestamp + 'Z';
+    const dateObj = new Date(timestamp);
+    const time = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    let dateDivider = '';
+    const msgDate = dateObj.toLocaleDateString();
+    const prevMsgDate = index > 0 ? new Date(msgs[index-1].timestamp.endsWith('Z') ? msgs[index-1].timestamp : msgs[index-1].timestamp + 'Z').toLocaleDateString() : null;
+    
+    if (msgDate !== prevMsgDate) {
+      dateDivider = `<div class="date-divider">${msgDate === new Date().toLocaleDateString() ? 'Hoje' : msgDate}</div>`;
+    }
+
+    // Lógica dos Ticks (WhatsApp Style)
+    let ticksHtml = '';
+    if (isMe) {
+      if (msg.is_read) {
+        // LIDO: Dois tracinhos azuis (verde claro no seu pedido, mas azul é o padrão lido, vou usar o azul claro profissional)
+        ticksHtml = `<span class="ticks read"><i class="fa-solid fa-check"></i><i class="fa-solid fa-check"></i></span>`;
+      } else {
+        // ENVIADO/RECEBIDO: Dois tracinhos cinzas (vou assumir recebido se o socket confirmou o envio)
+        ticksHtml = `<span class="ticks sent"><i class="fa-solid fa-check"></i><i class="fa-solid fa-check"></i></span>`;
+      }
+    }
+
+    let mediaHtml = '';
+    if (msg.file_url) {
+      if (msg.file_type === 'image') {
+        mediaHtml = `<img src="${msg.file_url}" style="max-width: 100%; border-radius: 8px; margin-bottom: 5px; cursor: pointer;" onclick="window.open('${msg.file_url}', '_blank')">`;
+      } else if (msg.file_type === 'video') {
+        mediaHtml = `<video src="${msg.file_url}" controls style="max-width: 100%; border-radius: 8px; margin-bottom: 5px;"></video>`;
+      } else if (msg.file_type === 'pdf') {
+        mediaHtml = `
+          <a href="${msg.file_url}" target="_blank" style="display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; text-decoration: none; color: white; margin-bottom: 5px;">
+            <i class="fa-solid fa-file-pdf" style="font-size: 24px; color: #f15c5c;"></i>
+            <span style="font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Documento PDF</span>
+          </a>`;
+      } else {
+        mediaHtml = `
+          <a href="${msg.file_url}" target="_blank" style="display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; text-decoration: none; color: white; margin-bottom: 5px;">
+            <i class="fa-solid fa-file-lines" style="font-size: 24px; color: var(--accent);"></i>
+            <span style="font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Arquivo</span>
+          </a>`;
+      }
+    }
+
+    return `
+      ${dateDivider}
+      <div class="message ${isMe ? 'me' : 'other'}" style="${msg.file_type === 'image' ? 'padding: 4px;' : ''}">
+        ${mediaHtml}
+        ${msg.content ? `<div class="message-content">${escapeHtml(msg.content)}</div>` : ''}
+        <div class="message-meta" style="${msg.file_type === 'image' && !msg.content ? 'background: rgba(0,0,0,0.4); padding: 2px 5px; border-radius: 10px; bottom: 8px; right: 8px;' : ''}">
+          <span>${time}</span>
+          ${ticksHtml}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  if (isAtBottom) {
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function sendMessage() {
+  const content = messageInput.value.trim();
+  if (!content) return;
+
+  socket.emit('send_message', {
+    receiver_id: parseInt(otherUserId),
+    content: content
+  });
+
+  messageInput.value = '';
+  sendBtn.disabled = true;
+  sendIcon.className = 'fa-solid fa-microphone'; // Volta pro microfone (estilo WA)
+  messageInput.focus();
+}
+
+messageInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') sendMessage();
+});
+
+messageInput.addEventListener('input', () => {
+  const hasText = messageInput.value.trim().length > 0;
+  sendBtn.disabled = !hasText;
+  sendIcon.className = hasText ? 'fa-solid fa-paper-plane' : 'fa-solid fa-microphone';
+});
+
+// Lógica de Upload de Arquivos
+fileInput.addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  
+  selectedFile = file;
+  previewContent.innerHTML = '';
+  
+  const reader = new FileReader();
+  const fileType = file.type;
+  
+  if (fileType.startsWith('image/')) {
+    const img = document.createElement('img');
+    img.style.maxWidth = '100%';
+    img.style.maxHeight = '300px';
+    img.style.borderRadius = '8px';
+    reader.onload = (e) => img.src = e.target.result;
+    reader.readAsDataURL(file);
+    previewContent.appendChild(img);
+  } else if (fileType.startsWith('video/')) {
+    const video = document.createElement('video');
+    video.style.maxWidth = '100%';
+    video.style.maxHeight = '300px';
+    video.controls = true;
+    reader.onload = (e) => video.src = e.target.result;
+    reader.readAsDataURL(file);
+    previewContent.appendChild(video);
+  } else {
+    const icon = document.createElement('div');
+    icon.style.textAlign = 'center';
+    icon.innerHTML = `
+      <i class="fa-solid fa-file-lines" style="font-size: 60px; color: var(--accent); margin-bottom: 10px;"></i>
+      <p style="font-size: 14px; color: var(--text-secondary);">${file.name}</p>
+    `;
+    previewContent.appendChild(icon);
+  }
+  
+  uploadPreviewModal.style.display = 'flex';
+});
+
+function closeUploadPreview() {
+  uploadPreviewModal.style.display = 'none';
+  fileInput.value = '';
+  selectedFile = null;
+  fileCaption.value = '';
+}
+
+async function confirmUpload() {
+  if (!selectedFile) return;
+  
+  const formData = new FormData();
+  formData.append('file', selectedFile);
+  formData.append('receiver_id', otherUserId);
+  formData.append('content', fileCaption.value.trim());
+  
+  try {
+    // Mostrar algum feedback de carregamento se necessário
+    const response = await fetch('/api/chat/upload', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + token
+      },
+      body: formData
+    });
+    
+    if (response.ok) {
+      const msg = await response.json();
+      // O socket vai receber a nova mensagem se estiver configurado, 
+      // mas como o upload é via HTTP, vamos adicionar manualmente ou esperar o socket
+      // Para garantir experiência fluida, vamos fechar o modal
+      closeUploadPreview();
+      
+      // Se o socket não emitir automaticamente para o remetente, podemos adicionar aqui
+      // Mas o backend deve emitir 'new_message' para ambos ou 'message_sent'
+      // No nosso socketio_events.py atual, ele emite para o receiver.
+      // Vamos forçar um reload do histórico ou adicionar a msg
+      messages.push(msg);
+      renderMessages(messages);
+    } else {
+      alert('Erro ao enviar arquivo');
+    }
+  } catch (error) {
+    console.error('Erro no upload:', error);
+    alert('Erro na conexão');
+  }
+}
+
+// Inicialização
+loadUserInfo();
+loadHistory();
+initSocket();
+</script>
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área do Profissional - Nordes Studio</title>
+    <link rel="stylesheet" href="../assets/global/global.css">
+    <link rel="shortcut icon" href="../assets/images/icons/fav.png" type="image/x-icon" />
+    <style>
+        :root {
+            --primary-accent: #009FFF;
+            --secondary-accent: #00d4ff;
+            --text-light: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --bg-darker: #030013;
+            --card-bg: rgba(42, 47, 74, 0.3);
+            --border-color: rgba(0, 212, 255, 0.1);
+            --success: #00ff88;
+        }
+
+        body {
+            background: var(--bg-darker);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+        }
+
+        header {
+            background: rgba(0, 12, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            text-decoration: none;
+        }
+
+        .logo img { height: 40px; }
+
+        .logo-text {
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff, var(--primary-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--primary-accent);
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 5%;
+        }
+
+        .welcome-section {
+            margin-bottom: 3rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-accent);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .content-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .works-list {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 25px;
+            border: 1px solid var(--border-color);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .btn-add {
+            background: var(--primary-accent);
+            color: #fff;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .work-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: 0.3s;
+        }
+
+        .work-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .work-img {
+            width: 60px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .work-info h4 { margin-bottom: 0.2rem; }
+        .work-status {
+            font-size: 0.8rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--success);
+        }
+
+        .notifications {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 25px;
+            border: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 900px) {
+            .content-section { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="home.html" class="logo">
+            <img src="../assets/images/icons/logo.png" alt="Logo">
+            <span class="logo-text">NORDES STUDIO</span>
+        </a>
+        <div class="user-profile">
+            <span id="user-name">Carregando...</span>
+            <img src="../pages/erro-pages/imagens/mascotes/mascote404.png" alt="Avatar" class="user-avatar" id="user-avatar">
+            <a href="#" id="logout-btn" style="color: var(--text-muted); text-decoration: none; font-size: 0.8rem;">Sair</a>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <section class="welcome-section">
+            <h1>Painel do Profissional</h1>
+            <p style="color: var(--text-muted);">Gerencie suas obras, acompanhe vendas e interaja com seus leitores.</p>
+        </section>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-value">12.5k</span>
+                <span class="stat-label">Leituras Totais</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">R$ 1.240</span>
+                <span class="stat-label">Saldo Disponível</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">4.8</span>
+                <span class="stat-label">Avaliação Média</span>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="works-list">
+                <div class="section-header">
+                    <h3>Minhas Obras</h3>
+                    <a href="publique-seu-livro.html" class="btn-add">+ Nova Obra</a>
+                </div>
+                
+                <div id="works-container">
+                    <!-- Simulação de obras -->
+                    <div class="work-item">
+                        <img src="../assets/images/livro-1.jpg" alt="Obra" class="work-img">
+                        <div class="work-info">
+                            <h4>O Despertar do Norte</h4>
+                            <span class="work-status">Publicado</span>
+                            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">2.4k visualizações • 156 vendas</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="../assets/images/livro-2.jpg" alt="Obra" class="work-img">
+                        <div class="work-info">
+                            <h4>Crônicas de Nordes</h4>
+                            <span class="work-status" style="background: rgba(255, 166, 0, 0.1); color: orange;">Em Revisão</span>
+                            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">Enviado em 20/01/2026</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="notifications">
+                <h3>Notificações</h3>
+                <div style="margin-top: 1.5rem;">
+                    <p style="font-size: 0.9rem; padding: 10px 0; border-bottom: 1px solid var(--border-color);">
+                        <strong>Sistema:</strong> Sua obra "O Despertar do Norte" atingiu 2.000 leituras!
+                    </p>
+                    <p style="font-size: 0.9rem; padding: 10px 0; border-bottom: 1px solid var(--border-color);">
+                        <strong>Editorial:</strong> Recebemos seu novo manuscrito. Em breve daremos um retorno.
+                    </p>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <script>
+        // Simulação de carregamento de dados do usuário logado
+        document.addEventListener('DOMContentLoaded', () => {
+            const userData = JSON.parse(localStorage.getItem('nordes_user'));
+            if (userData) {
+                document.getElementById('user-name').innerText = userData.name || 'Usuário';
+                if (userData.picture) document.getElementById('user-avatar').src = userData.picture;
+            } else {
+                // Se não estiver logado, redireciona
+                // window.location.href = 'login.html';
+                document.getElementById('user-name').innerText = 'Visitante';
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('nordes_user');
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>

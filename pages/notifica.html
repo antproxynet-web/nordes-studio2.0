@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notificações - Nordes Studio</title>
+    <link rel="stylesheet" href="../assets/global/global.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0C071C;
+            --line: rgba(255, 255, 255, 0.12);
+            --text: #ffffff;
+            --muted: rgba(255, 255, 255, 0.65);
+            --accent: #009DFF;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 20px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: sticky;
+            top: 0;
+            background: var(--bg);
+            z-index: 100;
+        }
+
+        .back-btn {
+            color: #fff;
+            text-decoration: none;
+            font-size: 20px;
+        }
+
+        header h1 {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .notif-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .notif-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            gap: 15px;
+            transition: 0.3s;
+            position: relative;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .notif-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent);
+        }
+
+        .notif-item.unread::after {
+            content: '';
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .notif-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(0, 157, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .notif-content {
+            flex: 1;
+        }
+
+        .notif-content h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .notif-content p {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.4;
+        }
+
+        .notif-time {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.3);
+            margin-top: 8px;
+            display: block;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--muted);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 20px;
+            opacity: 0.2;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="perfil.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+        <h1>Notificações</h1>
+    </header>
+
+    <div class="container">
+        <div class="notif-list" id="notifList">
+            <!-- Carregando... -->
+        </div>
+    </div>
+
+    <script>
+(() => {
+
+  // ===============================
+  // CONFIG
+  // ===============================
+  const TOKEN_KEY = 'nordes_token';
+  const token = localStorage.getItem(TOKEN_KEY);
+
+  // ===============================
+  // UTILIDADES
+  // ===============================
+  const $ = (id) => document.getElementById(id);
+
+  function logoutAndRedirect() {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem('nordes_user');
+    window.location.replace('login.html');
+  }
+
+  async function authFetch(url, options = {}) {
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        ...(options.headers || {}),
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      logoutAndRedirect();
+      throw new Error('Não autorizado');
+    }
+
+    return response;
+  }
+
+  // ===============================
+  // INIT
+  // ===============================
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!token) {
+      window.location.replace('login.html');
+      return;
+    }
+
+    fetchNotifications();
+  });
+
+  // ===============================
+  // FETCH
+  // ===============================
+  async function fetchNotifications() {
+    try {
+      const response = await authFetch('/api/admin/my-notifications');
+      const data = await response.json();
+
+      if (!Array.isArray(data)) {
+        console.warn('Resposta inválida de notificações');
+        renderEmptyState();
+        return;
+      }
+
+      renderNotifications(data);
+
+    } catch (error) {
+      console.error('Erro ao buscar notificações:', error);
+      renderEmptyState();
+    }
+  }
+
+  // ===============================
+  // RENDER
+  // ===============================
+  function renderEmptyState() {
+    const list = $('notifList');
+    if (!list) return;
+
+    list.innerHTML = '';
+
+    const container = document.createElement('div');
+    container.className = 'empty-state';
+
+    const icon = document.createElement('i');
+    icon.className = 'fa-regular fa-bell-slash';
+
+    const text = document.createElement('p');
+    text.textContent = 'Você não tem nenhuma notificação no momento.';
+
+    container.appendChild(icon);
+    container.appendChild(text);
+    list.appendChild(container);
+  }
+
+  function renderNotifications(notifs) {
+    const list = $('notifList');
+    if (!list) return;
+
+    list.innerHTML = '';
+
+    if (notifs.length === 0) {
+      renderEmptyState();
+      return;
+    }
+
+    notifs.forEach(n => {
+      const link = document.createElement('a');
+      link.className = `notif-item ${n.is_read ? '' : 'unread'}`;
+      link.href = n.link || '#';
+
+      const iconBox = document.createElement('div');
+      iconBox.className = 'notif-icon';
+
+      const icon = document.createElement('i');
+      icon.className = `fa-solid ${getIconByType(n.type)}`;
+
+      iconBox.appendChild(icon);
+
+      const content = document.createElement('div');
+      content.className = 'notif-content';
+
+      const title = document.createElement('h3');
+      title.textContent = n.title || 'Notificação';
+
+      const message = document.createElement('p');
+      message.textContent = n.message || '';
+
+      const time = document.createElement('span');
+      time.className = 'notif-time';
+      time.textContent = formatDate(n.timestamp);
+
+      content.appendChild(title);
+      content.appendChild(message);
+      content.appendChild(time);
+
+      link.appendChild(iconBox);
+      link.appendChild(content);
+
+      list.appendChild(link);
+    });
+  }
+
+  // ===============================
+  // HELPERS
+  // ===============================
+  function getIconByType(type) {
+    switch (type) {
+      case 'promo': return 'fa-tag';
+      case 'warning': return 'fa-triangle-exclamation';
+      case 'success': return 'fa-circle-check';
+      default: return 'fa-bell';
+    }
+  }
+
+  function formatDate(timestamp) {
+    if (!timestamp) return '';
+
+    return new Date(timestamp).toLocaleString('pt-BR', {
+      day: '2-digit',
+      month: 'short',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
+})();
+</script>
+</body>
+</html>

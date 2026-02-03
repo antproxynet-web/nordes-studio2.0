@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produto - Nordes Studio</title>
+    <link rel="stylesheet" href="../assets/global/global.css">
+    <link rel="stylesheet" href="../assets/footer/footer.css">
+    <link rel="shortcut icon" href="../assets/images/icons/fav.png" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-accent: #009FFF;
+            --secondary-accent: #00d4ff;
+            --text-light: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --bg-dark: #000C1E;
+            --bg-darker: #030013;
+            --card-bg: rgba(42, 47, 74, 0.2);
+            --border-color: rgba(0, 212, 255, 0.1);
+            --white: #ffffff;
+            --success: #00ff88;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-darker);
+            color: var(--text-light);
+            line-height: 1.4;
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 12, 30, 0.95);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            padding: 0.8rem 5%;
+            border-bottom: 1px solid var(--border-color);
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 40px;
+            filter: drop-shadow(0 0 8px rgba(0, 159, 255, 0.3));
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-actions a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: 0.3s;
+        }
+
+        .nav-actions a:hover {
+            color: var(--primary-accent);
+        }
+
+        /* MAIN CONTAINER */
+        .container {
+            max-width: 1200px;
+            margin: 100px auto 40px;
+            padding: 0 15px;
+        }
+
+        /* PRODUCT SECTION */
+        .product-main {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            display: grid;
+            grid-template-columns: 450px 1fr;
+            gap: 2.5rem;
+            padding: 2rem;
+            border-radius: 20px;
+        }
+
+        .product-images {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .main-img-wrapper {
+            width: 100%;
+            aspect-ratio: 1/1;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .main-img-wrapper img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: 0.3s;
+        }
+
+        .product-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.3;
+        }
+
+        .product-stats {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .rating-stars {
+            color: #FFD700;
+            border-right: 1px solid var(--border-color);
+            padding-right: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .sold-count {
+            color: var(--text-muted);
+        }
+
+        .price-container {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1.5rem;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .current-price {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--secondary-accent);
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .shipping-info {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.95rem;
+            padding: 0.5rem 0;
+        }
+
+        .shipping-label {
+            color: var(--text-muted);
+            width: 100px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .qty-controls {
+            display: flex;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .qty-btn {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #fff;
+            transition: 0.3s;
+        }
+
+        .qty-btn:hover {
+            background: rgba(0, 159, 255, 0.2);
+        }
+
+        .qty-input {
+            width: 50px;
+            height: 36px;
+            background: transparent;
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            text-align: center;
+            color: #fff;
+            font-weight: 600;
+            border-top: none;
+            border-bottom: none;
+        }
+
+        .purchase-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn-add-cart {
+            background: rgba(0, 159, 255, 0.1);
+            border: 1px solid var(--primary-accent);
+            color: var(--primary-accent);
+            padding: 0 1.5rem;
+            height: 54px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .btn-add-cart:hover {
+            background: var(--primary-accent);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .btn-buy-now {
+            background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
+            color: #fff;
+            border: none;
+            padding: 0 2.5rem;
+            height: 54px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 700;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 159, 255, 0.3);
+        }
+
+        .btn-buy-now:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 159, 255, 0.5);
+        }
+
+        /* SHOP PROFILE */
+        .shop-profile {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            margin-top: 1.5rem;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            border-radius: 20px;
+        }
+
+        .shop-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid var(--primary-accent);
+            padding: 3px;
+            background: var(--bg-dark);
+        }
+
+        .shop-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .shop-actions {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .btn-shop {
+            padding: 0.6rem 1.2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: 0.3s;
+        }
+
+        .btn-view-shop {
+            border-color: var(--primary-accent);
+            color: var(--primary-accent);
+            background: rgba(0, 159, 255, 0.05);
+        }
+
+        .btn-view-shop:hover {
+            background: var(--primary-accent);
+            color: #fff;
+        }
+
+        .shop-stats-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            font-size: 0.9rem;
+            border-left: 1px solid var(--border-color);
+            padding-left: 2.5rem;
+        }
+
+        .stat-item-shop span:first-child {
+            color: var(--text-muted);
+            margin-right: 5px;
+        }
+
+        .stat-item-shop span:last-child {
+            color: var(--secondary-accent);
+            font-weight: 700;
+        }
+
+        /* PRODUCT SPECIFICATIONS */
+        .product-specs {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            margin-top: 1.5rem;
+            padding: 2.5rem;
+            border-radius: 20px;
+        }
+
+        .specs-title {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1rem 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            border-radius: 10px;
+            color: var(--primary-accent);
+            border-left: 4px solid var(--primary-accent);
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 1.2rem;
+            font-size: 0.95rem;
+            margin-bottom: 3rem;
+        }
+
+        .spec-label {
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .product-desc-text {
+            white-space: pre-wrap;
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-light);
+            padding: 0 1rem;
+        }
+
+        /* RECOMMENDATIONS */
+        .recommendations {
+            margin-top: 3rem;
+        }
+
+        .rec-title {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .rec-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        .rec-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1rem;
+        }
+
+        .rec-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 15px;
+            text-decoration: none;
+            color: inherit;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .rec-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-accent);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .rec-img {
+            width: 100%;
+            aspect-ratio: 2/3;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+        }
+
+        .rec-info h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            height: 2.6rem;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            margin-bottom: 0.8rem;
+            color: #fff;
+        }
+
+        .rec-price {
+            color: var(--secondary-accent);
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-top: auto;
+        }
+
+        /* NOTIFICATION */
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary-accent);
+            color: #fff;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            z-index: 2000;
+            display: none;
+            box-shadow: 0 10px 30px rgba(0, 159, 255, 0.4);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .notification.active {
+            display: block;
+        }
+
+        @media (max-width: 1024px) {
+            .product-main {
+                grid-template-columns: 1fr;
+            }
+            .product-images {
+                max-width: 450px;
+                margin: 0 auto;
+            }
+            .shop-profile {
+                flex-direction: column;
+                text-align: center;
+            }
+            .shop-stats-grid {
+                border-left: none;
+                padding-left: 0;
+                border-top: 1px solid var(--border-color);
+                padding-top: 1.5rem;
+                width: 100%;
+            }
+            .rec-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .rec-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .purchase-actions {
+                flex-direction: column;
+            }
+            .btn-add-cart, .btn-buy-now {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <a href="home.html" class="logo">
+            <img src="../assets/images/icons/logo.png" alt="Nordes Studio">
+            <span class="logo-text">NORDES STUDIO</span>
+        </a>
+        <div class="nav-actions">
+            <a href="home.html"><i class="fas fa-home"></i> Início</a>
+            <a href="categorias.html"><i class="fas fa-th-large"></i> Categorias</a>
+            <a href="carrinho.html">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="cart-counter">Carrinho (0)</span>
+            </a>
+        </div>
+    </nav>
+</header>
+
+<div class="container">
+    <!-- PRODUCT MAIN -->
+    <main class="product-main">
+        <div class="product-images">
+            <div class="main-img-wrapper">
+                <img id="prod-img" src="" alt="Produto">
+            </div>
+        </div>
+
+        <div class="product-details">
+            <h1 class="product-title" id="prod-title">Carregando...</h1>
+            
+            <div class="product-stats">
+                <div class="rating-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    <span style="margin-left: 8px; color: #fff; font-weight: 700;">4.8</span>
+                </div>
+                <div class="sold-count">1,2k Vendidos</div>
+            </div>
+
+            <div class="price-container">
+                <span class="old-price" id="prod-old-price">R$ 0,00</span>
+                <span class="current-price" id="prod-price">R$ 0,00</span>
+            </div>
+
+            <div class="shipping-info">
+                <span class="shipping-label">Frete</span>
+                <div>
+                    <p><i class="fas fa-truck" style="color: var(--success); margin-right: 8px;"></i> Frete Grátis</p>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 6px;">Para todo o Brasil em compras acima de R$ 29,00</p>
+                </div>
+            </div>
+
+            <div class="quantity-selector">
+                <span class="shipping-label">Quantidade</span>
+                <div class="qty-controls">
+                    <button class="qty-btn" onclick="changeQty(-1)">-</button>
+                    <input type="text" class="qty-input" id="qty-input" value="1" readonly>
+                    <button class="qty-btn" onclick="changeQty(1)">+</button>
+                </div>
+                <span style="color: var(--text-muted); font-size: 0.9rem;"><span id="prod-stock" style="color: #fff; font-weight: 600;">0</span> peças disponíveis</span>
+            </div>
+
+            <div class="purchase-actions">
+                <button class="btn-add-cart" onclick="addToCart()">
+                    <i class="fas fa-cart-plus"></i> Adicionar ao Carrinho
+                </button>
+                <button class="btn-buy-now" onclick="buyNow()">Comprar Agora</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- SHOP PROFILE -->
+    <section class="shop-profile">
+        <img src="../assets/images/icons/logo.png" alt="Nordes Studio" class="shop-avatar">
+        <div class="shop-info">
+            <h3>Nordes Studio</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">Último login há 5 minutos</p>
+            <div class="shop-actions">
+                <button class="btn-shop btn-view-shop"><i class="fas fa-store"></i> Ver Loja</button>
+                <button class="btn-shop"><i class="fas fa-comments"></i> Chat Agora</button>
+            </div>
+        </div>
+        <div class="shop-stats-grid">
+            <div class="stat-item-shop"><span>Avaliações:</span> <span>45,2k</span></div>
+            <div class="stat-item-shop"><span>Produtos:</span> <span>128</span></div>
+            <div class="stat-item-shop"><span>Taxa de Resposta:</span> <span>98%</span></div>
+            <div class="stat-item-shop"><span>Seguidores:</span> <span>15,7k</span></div>
+            <div class="stat-item-shop"><span>Tempo de Resposta:</span> <span>em minutos</span></div>
+        </div>
+    </section>
+
+    <!-- PRODUCT SPECS & DESCRIPTION -->
+    <section class="product-specs">
+        <h2 class="specs-title">Especificações do Produto</h2>
+        <div class="specs-grid">
+            <span class="spec-label">Categoria</span>
+            <span id="prod-category" style="color: #fff;">Livros</span>
+            
+            <span class="spec-label">Autor</span>
+            <span id="prod-author-spec" style="color: #fff;">Nordes Studio</span>
+            
+            <span class="spec-label">Estoque</span>
+            <span id="prod-stock-spec" style="color: #fff;">0</span>
+            
+            <span class="spec-label">Enviado de</span>
+            <span style="color: #fff;">São Paulo, Brasil</span>
+        </div>
+
+        <h2 class="specs-title">Descrição do Produto</h2>
+        <div class="product-desc-text" id="prod-desc">
+            Carregando descrição...
+        </div>
+    </section>
+
+    <!-- RECOMMENDATIONS -->
+    <section class="recommendations">
+        <h2 class="rec-title">VOCÊ TAMBÉM PODE GOSTAR</h2>
+        <div class="rec-grid" id="recommendations-grid">
+            <!-- Recomendações dinâmicas via JS -->
+        </div>
+    </section>
+</div>
+
+<div class="notification" id="notification">Item adicionado ao carrinho!</div>
+
+<footer class="main-footer">
+    <div class="footer-grid">
+        <div class="footer-col">
+            <div class="logo">
+                <img src="../assets/images/icons/logo.png" alt="Nordes Studio">
+                <span class="logo-text">NORDES STUDIO</span>
+            </div>
+            <p class="footer-desc">A sua loja definitiva de mangás e livros. A ideia nasce aqui, a aventura começa com você.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Links Úteis</h4>
+            <ul>
+                <li><a href="sobre.html">Sobre Nós</a></li>
+                <li><a href="termos-de-uso.html">Termos de Uso</a></li>
+                <li><a href="termos-de-privacidade.html">Privacidade</a></li>
+                <li><a href="contato.html">Contato</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Categorias</h4>
+            <ul>
+                <li><a href="categorias.html?cat=manga">Mangás</a></li>
+                <li><a href="categorias.html?cat=livro">Livros</a></li>
+                <li><a href="categorias.html?cat=lancamentos">Lançamentos</a></li>
+                <li><a href="categorias.html?cat=promocoes">Promoções</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Siga-nos</h4>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Nordes Studio. Todos os direitos reservados.</p>
+    </div>
+</footer>
+
+<script src="../assets/script/produto.js"></script>
+<script>
+    // Lógica de Quantidade
+    function changeQty(val) {
+        const input = document.getElementById('qty-input');
+        let current = parseInt(input.value);
+        current += val;
+        if (current < 1) current = 1;
+        input.value = current;
+    }
+
+    // Lógica de Recomendações Dinâmicas
+    async function loadRecommendations() {
+        try {
+            const response = await fetch('../assets/script/books_data.json');
+            const allBooks = await response.json();
+            
+            // Embaralhar e pegar 6 livros aleatórios
+            const shuffled = allBooks.sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, 6);
+            
+            const grid = document.getElementById('recommendations-grid');
+            grid.innerHTML = selected.map(book => `
+                <a href="produto.html?id=${book.id}&title=${encodeURIComponent(book.titulo)}&price=${book.preco}&author=${encodeURIComponent(book.autor)}&image=${book.imagem}&desc=${encodeURIComponent(book.descricao)}&stock=${book.estoque}&cat=${encodeURIComponent(book.categoria)}" class="rec-card" data-product-link="true">
+                    <img src="${book.imagem.startsWith('http') ? book.imagem : 'https://back-939v.onrender.com/uploads/' + book.imagem.split('/').pop()}" alt="${book.titulo}" class="rec-img" onerror="this.src='https://via.placeholder.com/200x200?text=Sem+Imagem'">
+                    <div class="rec-info">
+                        <h4>${book.titulo}</h4>
+                        <p class="rec-price">R$ ${book.preco.toFixed(2).replace('.', ',')}</p>
+                    </div>
+                </a>
+            `).join('');
+        } catch (error) {
+            console.error('Erro ao carregar recomendações:', error);
+        }
+    }
+
+    // Função para atualizar os campos específicos desta página
+    function updateExtendedProductInfo() {
+        const params = new URLSearchParams(window.location.search);
+        const price = parseFloat(params.get('price')) || 0;
+        const oldPrice = price * 1.2;
+        const category = params.get('cat') || "Livros";
+        const author = params.get('author') || "Nordes Studio";
+        
+        if(document.getElementById('prod-old-price')) document.getElementById('prod-old-price').innerText = `R$ ${oldPrice.toFixed(2).replace('.', ',')}`;
+        if(document.getElementById('prod-category')) document.getElementById('prod-category').innerText = category;
+        if(document.getElementById('prod-author-spec')) document.getElementById('prod-author-spec').innerText = author;
+        if(document.getElementById('prod-stock-spec')) document.getElementById('prod-stock-spec').innerText = params.get('stock') || "0";
+    }
+
+    // Inicializar
+    document.addEventListener('DOMContentLoaded', () => {
+        loadRecommendations();
+        updateExtendedProductInfo();
+    });
+
+    // Corrigir navegação entre produtos na mesma página
+    window.addEventListener('popstate', () => {
+        if (typeof window.loadProduct === 'function') {
+            window.loadProduct();
+            updateExtendedProductInfo();
+            loadRecommendations();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    });
+
+    // Interceptar cliques nos links de recomendação
+    document.getElementById('recommendations-grid').addEventListener('click', (e) => {
+        const link = e.target.closest('a[data-product-link="true"]');
+        if (link) {
+            e.preventDefault();
+            const url = link.getAttribute('href');
+            window.history.pushState({}, '', url);
+            
+            // Forçar atualização
+            if (typeof window.loadProduct === 'function') {
+                window.loadProduct();
+                updateExtendedProductInfo();
+                loadRecommendations();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+    });
+</script>
+</body>
+</html>

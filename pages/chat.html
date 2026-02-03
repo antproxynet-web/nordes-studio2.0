@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>WhatsApp Style - Nordes</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+<style>
+:root {
+  --bg-header: #121b22;
+  --bg-body: #0b141a;
+  --bg-item-hover: #202c33;
+  --text-primary: #e9edef;
+  --text-secondary: #8696a0;
+  --accent: #00a884; /* Verde WhatsApp */
+  --line: #222d34;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: #0C071C;
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+header {
+  background: #0C071C;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.back-btn {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 20px;
+}
+
+header h1 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.header-icons {
+  display: flex;
+  gap: 20px;
+  color: var(--text-secondary);
+  font-size: 18px;
+}
+
+.search-container {
+  padding: 10px 16px;
+  background: #0C071C
+  position: sticky;
+  top: 56px;
+  z-index: 99;
+}
+
+.search-wrapper {
+  background: #190E39;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  height: 35px;
+}
+
+.search-wrapper i {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 14px;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: var(--text-secondary);
+}
+
+.chat-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+  text-decoration: none;
+  color: inherit;
+  border-bottom: 0.5px solid var(--line);
+}
+
+.chat-item:active {
+  background: var(--bg-item-hover);
+}
+
+.avatar-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #2a3942;
+}
+
+.status-dot {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 12px;
+  height: 12px;
+  background: #444;
+  border: 2px solid var(--bg-body);
+  border-radius: 50%;
+}
+
+.status-dot.online {
+  background: var(--accent);
+}
+
+.chat-info {
+  flex: 1;
+  overflow: hidden;
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.chat-name-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  overflow: hidden;
+}
+
+.chat-name {
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.verified-icon {
+  color: #009DFF;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.chat-time {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.chat-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-message {
+  font-size: 14px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+.unread-badge {
+  background: var(--accent);
+  color: #000;
+  font-size: 12px;
+  font-weight: 700;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  margin-left: 8px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 100px 20px;
+  color: var(--text-secondary);
+}
+
+.empty-state i {
+  font-size: 60px;
+  margin-bottom: 20px;
+  opacity: 0.3;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-secondary);
+}
+
+.error-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #f15c5c;
+}
+
+.error-state button {
+  margin-top: 20px;
+  padding: 10px 24px;
+  background: var(--accent);
+  color: #000;
+  border: none;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Floating Action Button */
+.fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  background: var(--accent);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  font-size: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  cursor: pointer;
+  z-index: 1000;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-left">
+    <a href="home.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+    <h1>Chat</h1>
+  </div>
+  <div class="header-icons">
+    <i class="fa-solid fa-camera"></i>
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <i class="fa-solid fa-ellipsis-vertical"></i>
+  </div>
+</header>
+
+<div class="search-container">
+  <div class="search-wrapper">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" id="searchInput" class="search-input" placeholder="Pesquisar...">
+  </div>
+</div>
+
+<div class="chat-list" id="chatList">
+  <div class="loading">Carregando conversas...</div>
+</div>
+
+<div class="fab">
+  <i class="fa-solid fa-message"></i>
+</div>
+
+<script src="../assets/js/auth-guard.js"></script>
+
+<script>
+const API_URL = '/api/chat';
+const chatList = document.getElementById('chatList');
+const searchInput = document.getElementById('searchInput');
+
+if (!authGuard.requireAuthentication()) {
+  // Redireciona
+}
+
+let allUsers = [];
+let searchTimeout;
+
+async function fetchUsers(search = '') {
+  try {
+    const url = search 
+      ? `${API_URL}/users?search=${encodeURIComponent(search)}`
+      : `${API_URL}/users`;
+    
+    const response = await authGuard.authenticatedFetch(url);
+    
+    if (!response.ok) {
+      chatList.innerHTML = `
+        <div class="error-state">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <p>Erro ao carregar conversas</p>
+          <button onclick="init()">Tentar novamente</button>
+        </div>
+      `;
+      return [];
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Erro:', error);
+    return [];
+  }
+}
+
+function formatTime(isoString) {
+  if (!isoString) return '';
+  const date = new Date(isoString.endsWith('Z') ? isoString : isoString + 'Z');
+  const now = new Date();
+  
+  if (date.toDateString() === now.toDateString()) {
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+  
+  const yesterday = new Date();
+  yesterday.setDate(now.getDate() - 1);
+  if (date.toDateString() === yesterday.toDateString()) {
+    return 'Ontem';
+  }
+  
+  return date.toLocaleDateString([], { day: '2-digit', month: '2-digit' });
+}
+
+function renderChats(users) {
+  if (!users || users.length === 0) {
+    chatList.innerHTML = `
+      <div class="empty-state">
+        <i class="fa-solid fa-message"></i>
+        <p>Nenhuma conversa encontrada</p>
+      </div>
+    `;
+    return;
+  }
+
+  chatList.innerHTML = users.map(user => {
+    const avatarUrl = authGuard.normalizePictureUrl(user.picture);
+    const time = formatTime(user.last_message_time);
+    
+    return `
+      <a href="real-chat.html?user_id=${user.id}" class="chat-item">
+        <div class="avatar-wrapper">
+          <img src="${avatarUrl}" class="avatar" alt="${user.name}" onerror="this.src='../assets/images/icons/default-avatar.png'">
+          <span class="status-dot ${user.is_online ? 'online' : ''}"></span>
+        </div>
+        <div class="chat-info">
+          <div class="chat-header">
+            <div class="chat-name-wrapper">
+              <span class="chat-name">${user.name || 'Usuário'}</span>
+              ${user.is_verified ? '<i class="fa-solid fa-circle-check verified-icon"></i>' : ''}
+            </div>
+            <span class="chat-time">${time}</span>
+          </div>
+          <div class="chat-footer">
+            <p class="chat-message">${user.last_message || 'Inicie uma conversa...'}</p>
+            ${user.unread_count > 0 ? `<span class="unread-badge">${user.unread_count}</span>` : ''}
+          </div>
+        </div>
+      </a>
+    `;
+  }).join('');
+}
+
+searchInput.addEventListener('input', (e) => {
+  clearTimeout(searchTimeout);
+  const searchTerm = e.target.value.trim();
+  
+  searchTimeout = setTimeout(async () => {
+    const users = await fetchUsers(searchTerm);
+    renderChats(users);
+  }, 300);
+});
+
+async function init() {
+  const users = await fetchUsers();
+  allUsers = users;
+  renderChats(users);
+}
+
+init();
+
+setInterval(async () => {
+  if (searchInput.value.trim() === '') {
+    const users = await fetchUsers();
+    renderChats(users);
+  }
+}, 5000);
+</script>
+
+</body>
+</html>

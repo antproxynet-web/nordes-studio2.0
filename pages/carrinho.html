@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho de Compras - Nordes Studio</title>
+    <link rel="stylesheet" href="../assets/style/carrinho.css">
+    <link rel="stylesheet" href="../assets/global/scroll.css">
+    <link rel="stylesheet" href="../assets/global/global.css">
+     <link rel="shortcut icon" href="../assets/images/icons/fav.png" type="image/x-icon" />
+    <link rel="stylesheet" href="../assets/footer/footer.css">
+</head>
+<body>
+
+<header>
+    <nav>
+        <a href="home.html" class="logo">
+         <img src="../assets/images/icons/logo.png" alt="Nordes Studio" fetchpriority="high">
+            <span class="logo-text">NORDES STUDIO</span>
+        </a>
+        <a href="home.html" class="back-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            Continuar Comprando
+        </a>
+    </nav>
+</header>
+
+<main id="cart-main">
+    <h1>Seu Carrinho</h1>
+    
+<div class="cart-items-container">
+	        <div class="cart-header">
+	            <input type="checkbox" id="select-all-items">
+	            <span>Produto</span>
+	            <span style="text-align: center;">Preço Unitário</span>
+	            <span style="text-align: center;">Quantidade</span>
+	            <span style="text-align: right;">Subtotal</span>
+	        </div>
+	        <div id="cart-items">
+	            <!-- Itens serão inseridos aqui via JS -->
+	        </div>
+	    </div>
+
+    <aside class="cart-summary" id="cart-summary">
+        <h2 class="summary-title">Resumo do Pedido</h2>
+        <div class="summary-row">
+            <span>Subtotal</span>
+            <span id="subtotal">R$ 0,00</span>
+        </div>
+        <div class="summary-row">
+            <span>Frete</span>
+            <span style="color: #00ff88;">Grátis</span>
+        </div>
+        <div class="summary-row summary-total">
+            <span>Total</span>
+            <span id="total">R$ 0,00</span>
+        </div>
+        <button class="checkout-btn" onclick="checkout()">Finalizar Compra</button>
+    </aside>
+</main>
+
+    
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+    <script src="../assets/script/carrinho.js"></script>
+    <script src="../assets/script/scroll.js"></script>
+    
+    
+
+    <!-- Footer Profissional -->
+    <footer class="main-footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo">
+                    <img src="../assets/images/icons/logo.png" alt="Nordes Studio">
+                    <span class="logo-text">NORDES STUDIO</span>
+                </div>
+                <p class="footer-desc">A sua loja definitiva de mangás e livros. A ideia nasce aqui, a aventura começa com você.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Links Úteis</h4>
+                <ul>
+                    <li><a href="sobre.html">Sobre Nós</a></li>
+                    <li><a href="termos-de-uso.html">Termos de Uso</a></li>
+                    <li><a href="termos-de-privacidade.html">Privacidade</a></li>
+                    <li><a href="contato.html">Contato</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Categorias</h4>
+                <ul>
+                    <li><a href="categorias.html?cat=manga">Mangás</a></li>
+                    <li><a href="categorias.html?cat=livro">Livros</a></li>
+                    <li><a href="categorias.html?cat=lancamentos">Lançamentos</a></li>
+                    <li><a href="categorias.html?cat=promocoes">Promoções</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Siga-nos</h4>
+                <div class="social-links">
+                    <a href="#">Instagram</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">Facebook</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Nordes Studio. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

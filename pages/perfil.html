@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perfil Nordes</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+<!-- Cropper.js -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+<style>
+:root{
+  --bg:#0b1440;
+  --line:rgba(255,255,255,0.12);
+  --text:#ffffff;
+  --muted:rgba(255,255,255,0.65);
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: system-ui, sans-serif;
+  
+}
+
+body{
+  background:#0C071C;
+  color: var(--text);
+}
+
+.profile-top{
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  border-bottom:1px solid var(--line);
+  position: relative;
+}
+
+.header-icons {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  gap: 15px;
+}
+
+.header-icons svg {
+  width: 24px;
+  height: 24px;
+  stroke: #fff;
+  stroke-width: 2;
+  fill: none;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.header-icons svg:hover {
+  stroke: #009DFF;
+}
+
+.btn-sair-header {
+  background: #ff4b4b;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-sair-header:hover {
+  background: #ff3333;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(255, 75, 75, 0.3);
+}
+
+.avatar{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  background: linear-gradient(135deg, #009DFF, #00d4ff);
+  border:2px solid rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  overflow: hidden;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user h2{
+  font-size:18px;
+  font-weight:600;
+}
+
+.user p{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:6px;
+}
+
+.badge{
+  font-size:12px;
+  padding:2px 10px;
+  border-radius:10px;
+  background:rgba(255,255,255,0.15);
+  margin-left:10px;
+}
+
+/* ATUALIZAR PERFIL */
+.profile-update{
+  border-top:3px solid var(--line);
+  border-bottom: 4px solid var(--line);
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  border-image: linear-gradient(66deg,#144984,#4474B4) 1;
+}
+
+.att{
+  font-size:12px;
+  font-weight:500;
+}
+
+.att-btn{
+  font-size:12px;
+  padding:6px 12px;
+  text-decoration:none;
+  border-radius:8px;
+  color:#009DFF;
+  backdrop-filter: blur(6px);
+  transition:.2s;
+  cursor: pointer;
+}
+
+.att-btn:hover{
+  background:rgba(255,255,255,0.25);
+}
+
+/* SECTIONS */
+.section{
+  padding:35px 20px;
+  border-bottom:1px solid var(--line);
+}
+
+.section h3{
+  font-size:16px;
+  font-weight:600;
+  margin-bottom:30px;
+  margin-top:-10px;
+  margin-left:10px;
+}
+
+/* MINHAS COMPRAS */
+.row-4{
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+  color:var(--muted);
+  margin-left:10px;
+  margin-right:10px;
+}
+
+.icon-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.icon-item:hover {
+  color: #009DFF;
+}
+
+.icon-item svg {
+  width: 28px;
+  height: 28px;
+  stroke: #fff;
+  stroke-width: 1.5;
+  fill: none;
+  transition: 0.2s;
+}
+
+.icon-item:hover svg {
+  stroke: #009DFF;
+}
+
+/* CARTEIRA */
+.wallet{
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+  color:var(--muted);
+  margin-left:10px;
+  margin-right:10px;
+}
+
+/* LISTA SIMPLES */
+.list-item, .list-item1, .support-item, .support-item1 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 0;
+  font-size: 14px;
+  margin-left: 20px;
+  margin-right: 20px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.list-item:hover, .list-item1:hover, .support-item:hover, .support-item1:hover {
+  color: #009DFF;
+}
+
+.list-item {
+  border-bottom: 1px solid var(--line);
+}
+
+.support-item {
+  border-bottom: 1px solid var(--line);
+}
+
+.list-item svg, .list-item1 svg, .support-item svg, .support-item1 svg, .activity-item svg {
+  width: 20px;
+  height: 20px;
+  stroke: #fff;
+  stroke-width: 1.5;
+  fill: none;
+  transition: 0.2s;
+}
+
+.list-item:hover svg, .list-item1:hover svg, .support-item:hover svg, .support-item1:hover svg {
+  stroke: #009DFF;
+}
+
+/* MAIS ATIVIDADES BOX */
+.activity-box{
+  border-radius:12px;
+  padding:12px;
+  margin-left:10px;
+  margin-right:10px;
+}
+
+.activity-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.activity-item{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.1);
+  font-size:14px;
+  padding:15px 30px;
+  border-radius:5px;
+  
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.activity-item:hover {
+  background: rgba(55, 143, 188, 0.1);
+  border-color: #009DFF;
+}
+
+.redi{
+  font-size:13px;
+  padding:8px 22px;
+  border-radius:999px;
+  border:none;
+  background:rgba(82, 104, 105,0.3);
+  color:#fff;
+  font-weight:600;
+  align-self:flex-start;
+  margin-left: -25px;
+  align-items:center;
+  gap:6px;
+  cursor: pointer;
+  transition: 0.3s;
+  display: flex;
+}
+
+.redi:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 117, 255, 0.4);
+}
+
+.gift{
+  border-bottom:1px solid var(--line);
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.gift:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.gift-btn{
+  position:relative;
+  width:24px;
+  height:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.section1, .section2 {
+  padding:35px 20px;
+  border-bottom:1px solid var(--line);
+}
+
+.section1 h3, .section2 h3 {
+  font-size:16px;
+  font-weight:600;
+  margin-bottom:25px;
+  margin-top:-10px;
+  margin-left:10px;
+}
+
+.finance-section h3 {
+  margin-bottom: 10px;
+}.activity-item i {
+  font-size: 16px;
+}
+.icon-btn {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn i {
+  pointer-events: none;
+}
+.icon-btn {
+  text-decoration: none;
+}
+.redi{
+  text-decoration: none;
+}
+
+.redi i{
+  font-size: 14px;
+}
+</style>
+    <link rel="stylesheet" href="../assets/global/alerts.css">
+</head>
+<body>
+<div class="profile-top">
+  <div class="header-icons">
+    <button class="btn-sair-header" onclick="logout()">
+      Sair
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px; height:16px; margin:0;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+    </button>
+   <a href="config.html" class="icon-btn" title="Configurações">
+  <i class="fa-solid fa-gear"></i>
+</a>
+    <a href="chat.html" class="icon-btn" title="Mensagens">
+	 <i class="fa-regular fa-comment-dots"></i>
+</a>
+    <a href="notifica.html" class="icon-btn" title="Notificações">
+ <i class="fa-regular fa-bell"></i>
+</a>
+  </div>
+<a href="publique-seu-livro.html" class="redi">
+  <i class="fa-solid fa-store"></i>
+  Comece a vender
+</a>
+  <div class="avatar" id="user-avatar">
+    <span id="user-initials">U</span>
+  </div>
+  <div class="user">
+    <h2 id="user-name">Carregando... <span class="badge" id="user-badge">Prata</span></h2>
+    <p id="user-email">email@exemplo.com</p>
+  </div>
+</div>
+
+<!-- ATUALIZAR USUÁRIO -->
+<div class="profile-update">
+  <h2 class="att">Atualizar informações de perfil</h2>
+  <a class="att-btn" href="editar-perfil.html">Atualizar agora</a>
+</div>
+
+
+<!-- MINHAS COMPRAS -->
+<div class="section">
+  <h3>Minhas Compras</h3>
+  <div class="row-4">
+    <div class="icon-item" onclick="window.location.href='pedidos.html'">
+      <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M7 15h0M2 9.5h20"/></svg>
+      <span>A Pagar</span>
+    </div>
+    <div class="icon-item" onclick="window.location.href='pedidos.html'">
+      <svg viewBox="0 0 24 24"><path d="M21 8l-2-2H5L3 8v10a2 2 0 002 2h14a2 2 0 002-2V8z"/><path d="M3 8h18M16 5v3M8 5v3"/></svg>
+      <span>Preparando</span>
+    </div>
+    <div class="icon-item" onclick="window.location.href='pedidos.html'">
+      <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      <span>A Caminho</span>
+    </div>
+    <div class="icon-item" onclick="window.location.href='pedidos.html'">
+      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      <span>A Avaliar</span>
+    </div>
+  </div>
+</div>
+
+<div class="gift" onclick="nsAlert('Gift cards em breve!', 'Gift Cards')">
+  <h2 class="att">gift cards, recargas e mais</h2>
+  <a class="gift-btn">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+      <path d="M7 3 L17 12 L7 21" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+</div>
+
+<div class="section finance-section">
+  <h3>Serviços financeiros</h3>
+  <div class="list-item" onclick="nsAlert('NScrédito em breve!', 'NScrédito')">
+    <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg>
+    NScrédito
+  </div>
+  <div class="list-item1" onclick="nsAlert('Segurança de compra ativa!', 'Segurança')">
+    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    Serviços e Segurança de compra
+  </div>
+</div>
+
+<!-- MAIS ATIVIDADES -->
+<div class="section2">
+  <h3>Mais Atividades</h3>
+  <div class="activity-box">
+    <div class="activity-grid">
+      <div class="activity-item" onclick="window.location.href='pedidos.html'">
+  <i class="fa-solid fa-cart-shopping"></i>
+  Comprar novamente
+</div>
+      <div class="activity-item" onclick="window.location.href='pedidos.html'">
+  <i class="fa-solid fa-star"></i>
+  Favoritos 
+</div>
+      <div class="activity-item" onclick="window.location.href='pedidos.html'">
+<i class="fa-solid fa-video"></i>
+  Live e vídeos
+</div>
+     <div class="activity-item" onclick="window.location.href='pedidos.html'">
+  <i class="fa-solid fa-users"></i>
+  Criadores e afiliados
+</div>
+      <div class="activity-item" onclick="window.location.href='pedidos.html'">
+<i class="fa-solid fa-medal"></i>
+  Programas de fidelidade
+</div>
+      <div class="activity-item" onclick="window.location.href='pedidos.html'">
+  <i class="fa-solid fa-clock-rotate-left"></i>
+  Visto recentemente 
+</div>
+    </div>
+  </div>
+</div>
+
+<!-- SUPORTE -->
+<div class="section1">
+  <h3>Suporte Nordes</h3>
+  <div class="support-item" onclick="window.location.href='publique-seu-livro.html'">
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Venda na Nordes
+  </div>
+  <div class="support-item" onclick="window.location.href='contato.html'">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
+    Central de ajuda
+  </div>
+  <div class="support-item1" onclick="window.location.href='sobre.html'">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    Sobre a Nordes
+  </div>
+</div>
+
+<!-- PAINEL ADM (Apenas para Administradores) -->
+<div id="admin-panel" class="section" style="display: none; border-top: 5px solid #009DFF; background: rgba(0, 157, 255, 0.05);">
+  <h3 style="color: #009DFF; display: flex; align-items: center; gap: 10px;">
+    <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; stroke: #009DFF; fill: none;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-width="2"/></svg>
+    Painel Administrativo
+  </h3>
+  <div class="activity-grid">
+    <div class="activity-item" onclick="window.location.href='admin/dashboard.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <span>Dashboard ADM</span>
+    </div>
+    <div class="activity-item" onclick="window.location.href='admin/control.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20v-6M6 20V10M18 20V4"/></svg>
+      <span>Controle de Vendas</span>
+    </div>
+    <div class="activity-item" onclick="window.location.href='admin/db_manager.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+      <span>Gerenciar Livros</span>
+    </div>
+    <div class="activity-item" onclick="window.location.href='admin/status.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      <span>Status do Sistema</span>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/auth-guard.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+
+    // ✅ CORREÇÃO: Usar auth guard para proteger a página
+    if (!authGuard.requireAuthentication()) return;
+
+    // ✅ CORREÇÃO: Buscar usuário atualizado da API
+    const user = await authGuard.fetchCurrentUser() || authGuard.getCurrentUser();
+
+    if (!user) {
+        authGuard.logout();
+        return;
+    }
+
+    // ===============================
+    // 3. Utilidades DOM seguras
+    // ===============================
+    const $ = (id) => document.getElementById(id);
+
+    // ===============================
+    // 4. Nome e Badge
+    // ===============================
+    const fullName =
+        user.name ||
+        `${user.firstname || ''} ${user.lastname || ''}`.trim() ||
+        'Usuário Nordes';
+
+    const roleLabel = user.role === 'admin' ? 'Administrador' : 'Prata';
+
+    const nameEl = $('user-name');
+    if (nameEl) {
+        nameEl.textContent = fullName;
+
+        // ✅ CORREÇÃO: Adicionar selo verificado se o usuário for verificado
+        if (user.is_verified) {
+            const verifiedIcon = document.createElement('i');
+            verifiedIcon.className = 'fa-solid fa-circle-check';
+            verifiedIcon.style.color = '#009DFF';
+            verifiedIcon.style.fontSize = '16px';
+            verifiedIcon.style.marginLeft = '5px';
+            nameEl.appendChild(verifiedIcon);
+        }
+
+        const badge = document.createElement('span');
+        badge.className = 'badge';
+        badge.id = 'user-badge';
+        badge.textContent = roleLabel;
+
+        nameEl.appendChild(document.createTextNode(' '));
+        nameEl.appendChild(badge);
+    }
+
+    // ===============================
+    // 5. Email
+    // ===============================
+    const emailEl = $('user-email');
+    if (emailEl) {
+        emailEl.textContent = user.email;
+    }
+
+    // ===============================
+    // 6. Avatar (foto ou iniciais)
+    // ===============================
+    const avatarContainer = $('user-avatar');
+
+    if (avatarContainer) {
+        avatarContainer.innerHTML = '';
+
+        if (user.picture) {
+            const img = document.createElement('img');
+            // ✅ CORREÇÃO: Usar normalização de URL
+            img.src = authGuard.normalizePictureUrl(user.picture);
+            img.alt = fullName;
+            img.loading = 'lazy';
+            avatarContainer.appendChild(img);
+        } else {
+            const initials =
+                fullName
+                    .split(' ')
+                    .filter(Boolean)
+                    .map(name => name[0])
+                    .join('')
+                    .substring(0, 2)
+                    .toUpperCase() || 'U';
+
+            const span = document.createElement('span');
+            span.id = 'user-initials';
+            span.textContent = initials;
+
+            avatarContainer.appendChild(span);
+        }
+    }
+
+    // ===============================
+    // 7. Painel ADM
+    // ===============================
+    const adminPanel = $('admin-panel');
+    if (adminPanel && user.role === 'admin') {
+        adminPanel.style.display = 'block';
+    }
+
+});
+
+
+// ===============================
+// 8. Logout seguro
+// ===============================
+function logout() {
+    const confirmacao = confirm(
+        'Deseja mesmo sair da sua conta?\nVocê precisará fazer login novamente.'
+    );
+
+    if (!confirmacao) return;
+
+    // ✅ CORREÇÃO: Usar auth guard para logout
+    authGuard.logout();
+}
+</script>
+<script src="../assets/global/alerts.js"></script>
+</body>
+</html>

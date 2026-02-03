@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editar Perfil - Nordes Studio</title>
+<link rel="shortcut icon" href="../assets/images/icons/fav.png" type="image/x-icon" />
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<!-- Cropper.js -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, sans-serif;
+}
+
+body {
+  background: #0C071C;
+  color: white;
+}
+
+/* TOPO */
+.header {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom:1px solid rgba(255,255,255,0.15);
+}
+.back-btn{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  text-decoration:none;
+  color:white;
+  font-size:16px;
+  font-weight:600;
+  margin-top:15px;
+  margin-left:15px;
+}
+
+.arrow-icon{
+  width:10px;
+  height:10px;
+  border-left:2px solid white;
+  border-bottom:2px solid white;
+  transform: rotate(45deg);
+}
+
+/* PERFIL */
+.profile {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border:2px solid #007BFF;
+}
+
+.profile p {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #60a5fa;
+  cursor: pointer;
+}
+
+.profile p:hover {
+  text-decoration: underline;
+}
+
+/* FORM */
+.form {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* INPUT BASE */
+input, textarea {
+  width: 100%;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.25);
+  padding: 14px;
+  padding-right: 44px;
+  border-radius: 10px;
+  color: white;
+  font-size: 14px;
+  outline: none;
+}
+
+/* DESABILITADO */
+input:disabled,
+textarea:disabled {
+  background: rgba(255,255,255,0.05);
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* FOCO */
+input:focus,
+textarea:focus {
+  border-color: #0087FF;
+  box-shadow: 0 0 0 2px rgba(0,135,255,0.25);
+}
+
+/* CAMPO COM ÍCONE */
+.edit-field{
+  position: relative;
+}
+
+/* ÍCONE DE EDIÇÃO */
+.edit-icon{
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #60a5fa;
+  cursor: pointer;
+  font-size: 16px;
+  opacity: 0.85;
+}
+
+.edit-icon:hover{
+  opacity: 1;
+}
+
+/* VALIDAÇÃO USERNAME */
+.username-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  font-size: 12px;
+  min-height: 18px;
+}
+
+.status-msg {
+  display: none;
+}
+
+.status-msg.error {
+  color: #ff4444;
+  display: block;
+}
+
+.status-msg.success {
+  color: #2ecc71;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.status-msg.success i {
+  font-size: 14px;
+}
+
+/* TEXTAREA */
+textarea {
+  height: 80px;
+  resize: none;
+}
+
+/* BOTÃO */
+.save {
+  margin-top: 20px;
+  width: fit-content;
+  background: #0054FF;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.save:hover {
+  background: #0046DD;
+}
+
+.save:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #333;
+}
+
+/* ZOOM */
+.container{
+  zoom:120%;
+}
+/* LINKS */
+.links {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 1px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+.lk {
+  text-decoration:none;
+  color:white;
+}
+.back-btn i{
+  font-size:18px;
+  margin-top:1px;
+}
+.link-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+  text-decoration:none;
+  color:white;
+}
+
+.link-row i{
+  font-size:14px;
+  opacity:0.7;
+}
+
+/* MODAL DE UPLOAD */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.8);
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background: #1a1a2e;
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+  color: #60a5fa;
+}
+
+.crop-container {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  max-height: 400px;
+  margin: 20px auto;
+  background: #000;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.crop-container img {
+  max-width: 100%;
+  display: block;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.modal-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-confirm {
+  background: #0054FF;
+  color: white;
+}
+
+.btn-confirm:hover {
+  background: #0046DD;
+}
+
+.btn-cancel {
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+.btn-cancel:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+.file-info {
+  margin-top: 15px;
+  font-size: 12px;
+  color: #a0a0a0;
+}
+
+.error-message {
+  color: #ff4444;
+  margin-top: 10px;
+  font-size: 13px;
+}
+
+.success-message {
+  color: #44ff44;
+  margin-top: 10px;
+  font-size: 13px;
+}
+
+#imageInput {
+  display: none;
+}
+.h4 {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #60a5fa;
+  cursor: pointer;
+  font-size: 10px;
+  opacity: 0.85;
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+  <a href="perfil.html" class="back-btn">
+    <i class="fa-solid fa-arrow-left"></i>
+    <span>Editar perfil</span>
+  </a>
+</header>
+
+<div class="container">
+
+  <div class="profile">
+    <img src="../assets/images/icons/default-avatar.png" class="avatar" id="profileAvatar">
+    <p id="changePhotoBtn">Editar foto de perfil</p>
+    <div id="verifiedStatus" style="display: none; align-items: center; justify-content: center; gap: 5px; margin-top: 8px; color: #009DFF; font-size: 14px; font-weight: 600;">
+      verificado <i class="fa-solid fa-circle-check"></i>
+    </div>
+  </div>
+
+  <div class="form">
+
+    <label>Nome completo:</label>
+    <div class="edit-field">
+      <input type="text" id="fullName" value="" disabled>
+      <i class="fa-solid fa-pen edit-icon" onclick="enableEdit(this)"></i>
+    </div>
+
+    <label>Nome de usuário (@):</label>
+    <div class="edit-field">
+      <input type="text" id="username" value="" disabled maxlength="30">
+      <i class="fa-solid fa-pen edit-icon" onclick="enableEdit(this)"></i>
+    </div>
+    <div class="username-status">
+      <span id="username-error" class="status-msg error">nome de usuário não disponível</span>
+      <span id="username-success" class="status-msg success">
+        <i class="fa-solid fa-circle-check"></i> disponível
+      </span>
+    </div>
+
+    <label>E-mail:</label>
+    <div class="edit-field">
+      <input type="email" id="email" value="" disabled>
+      <h4 class="h4"> ( Não Editável! )</h4>
+    </div>
+
+    <label>Biografia</label>
+    <div class="edit-field">
+      <textarea id="bio" disabled></textarea>
+      <i class="fa-solid fa-pen edit-icon" onclick="enableEdit(this)"></i>
+    </div>
+     <div class="links">
+  <a class="lk link-row" href="links.html">
+    <span>Adicionar links externos</span>
+    <i class="fa-solid fa-chevron-right"></i>
+  </a>
+</div>
+
+    <button class="save" id="saveBtn" onclick="saveProfile()">Salvar alterações</button>
+
+  </div>
+</div>
+
+<!-- Modal de Upload e Crop -->
+<div id="uploadModal" class="modal">
+  <div class="modal-content">
+    <h2>Editar Foto de Perfil</h2>
+    <p style="color: #a0a0a0; font-size: 13px; margin-bottom: 15px;">
+      Tamanho máximo: 5MB | Dimensões: até 1024x1024px
+    </p>
+    
+    <input type="file" id="imageInput" accept="image/png,image/jpeg,image/jpg,image/gif">
+    
+    <button class="btn-confirm" onclick="document.getElementById('imageInput').click()">
+      Escolher Imagem
+    </button>
+    
+    <div class="crop-container" id="cropContainer" style="display: none;">
+      <img id="cropImage" src="">
+    </div>
+    
+    <div class="file-info" id="fileInfo"></div>
+    <div class="error-message" id="errorMessage"></div>
+    <div class="success-message" id="successMessage"></div>
+    
+    <div class="modal-buttons" id="cropButtons" style="display: none;">
+      <button class="btn-confirm" id="confirmCropBtn" onclick="confirmCrop()">Confirmar</button>
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+    </div>
+    
+    <div class="modal-buttons" style="margin-top: 15px;">
+      <button class="btn-cancel" onclick="closeModal()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+<!-- ✅ CORREÇÃO: Importar auth guard -->
+<script src="../assets/js/auth-guard.js"></script>
+
+<script>
+let cropper = null;
+let selectedFile = null;
+let currentUser = null;
+let usernameTimeout = null;
+let isUsernameValid = true;
+let originalUsername = null; // ✅ NOVO: Armazenar username original
+
+const usernameInput = document.getElementById('username');
+const usernameError = document.getElementById('username-error');
+const usernameSuccess = document.getElementById('username-success');
+const saveBtn = document.getElementById('saveBtn');
+
+// ✅ CORREÇÃO: Usar auth guard para proteger a página
+if (!authGuard.requireAuthentication()) {
+  // Já redireciona automaticamente
+}
+
+// Carregar dados do usuário
+document.addEventListener('DOMContentLoaded', async () => {
+  // ✅ CORREÇÃO: Buscar usuário da API com tratamento correto de erros
+  try {
+    currentUser = await authGuard.fetchCurrentUser();
+    
+    // ✅ CORREÇÃO: Verificar se conseguiu buscar o usuário
+    if (!currentUser) {
+      console.error('Não foi possível carregar o perfil do usuário');
+      authGuard.logout('Erro ao carregar perfil');
+      return;
+    }
+
+    // Preencher campos
+    document.getElementById('fullName').value = currentUser.name || '';
+    usernameInput.value = currentUser.username || '';
+    originalUsername = currentUser.username || ''; // ✅ NOVO: Salvar username original
+    document.getElementById('email').value = currentUser.email || '';
+    document.getElementById('bio').value = currentUser.bio || '';
+    
+    // ✅ CORREÇÃO: Usar normalização de URL de imagem
+    if (currentUser.picture) {
+      document.getElementById('profileAvatar').src = authGuard.normalizePictureUrl(currentUser.picture);
+    }
+    
+    // ✅ CORREÇÃO: Mostrar status verificado se o usuário for verificado
+    if (currentUser.is_verified) {
+      document.getElementById('verifiedStatus').style.display = 'flex';
+    }
+    
+  } catch (error) {
+    console.error('Erro ao carregar perfil:', error);
+    authGuard.logout('Erro ao carregar perfil');
+  }
+});
+
+// Validação de username em tempo real
+usernameInput.addEventListener('input', () => {
+  const username = usernameInput.value.trim().toLowerCase();
+  
+  // Limpar estados
+  usernameError.style.display = 'none';
+  usernameSuccess.style.display = 'none';
+  
+  // ✅ CORREÇÃO: Se for o username original, não precisa validar
+  if (username === originalUsername) {
+    isUsernameValid = true;
+    saveBtn.disabled = false;
+    return;
+  }
+  
+  // ✅ CORREÇÃO: Não travar o botão durante a validação
+  saveBtn.disabled = false;
+  
+  if (username.length < 3) {
+    isUsernameValid = false;
+    saveBtn.disabled = true;
+    return;
+  }
+
+  clearTimeout(usernameTimeout);
+  usernameTimeout = setTimeout(async () => {
+    try {
+      // ✅ CORREÇÃO: Usar authenticatedFetch
+      const response = await authGuard.authenticatedFetch(
+        `/api/user/check-username?username=${encodeURIComponent(username)}`
+      );
+      
+      // ✅ CORREÇÃO: Verificar response.ok
+      if (!response.ok) {
+        console.error('Erro ao validar username:', response.status);
+        usernameError.textContent = 'Erro ao validar username';
+        usernameError.style.display = 'block';
+        isUsernameValid = false;
+        saveBtn.disabled = true;
+        return;
+      }
+      
+      const data = await response.json();
+      
+      if (data.available) {
+        usernameSuccess.style.display = 'flex';
+        isUsernameValid = true;
+        saveBtn.disabled = false;
+      } else {
+        usernameError.textContent = data.message || 'Nome de usuário não disponível';
+        usernameError.style.display = 'block';
+        isUsernameValid = false;
+        saveBtn.disabled = true;
+      }
+    } catch (error) {
+      console.error('Erro ao validar username:', error);
+      // ✅ CORREÇÃO: Não travar o botão em caso de erro de rede
+      usernameError.textContent = 'Erro de conexão';
+      usernameError.style.display = 'block';
+    }
+  }, 500);
+});
+
+// Habilitar edição de campo
+function enableEdit(icon){
+  const field = icon.previousElementSibling;
+  field.disabled = false;
+  field.focus();
+}
+
+// Salvar perfil
+async function saveProfile() {
+  if (!isUsernameValid) {
+    alert('Por favor, escolha um nome de usuário válido');
+    return;
+  }
+  
+  // ✅ CORREÇÃO: NÃO enviar email (whitelist de campos)
+  const data = {
+    name: document.getElementById('fullName').value,
+    username: usernameInput.value.trim().toLowerCase(),
+    bio: document.getElementById('bio').value
+  };
+
+  try {
+    // ✅ CORREÇÃO: Usar authenticatedFetch
+    const response = await authGuard.authenticatedFetch('/api/user/profile', {
+      method: 'PUT',
+      body: data
+    });
+
+    // ✅ CORREÇÃO: Verificar response.ok
+    if (!response.ok) {
+      const errorData = await response.json();
+      alert(errorData.message || 'Erro ao atualizar perfil');
+      return;
+    }
+
+    const result = await response.json();
+    
+    // ✅ CORREÇÃO: Atualizar usuário no auth guard
+    authGuard.updateUser(result.user);
+    
+    alert('Perfil atualizado com sucesso!');
+    
+    // ✅ CORREÇÃO: Não usar reload, apenas redirecionar
+    window.location.href = 'perfil.html';
+    
+  } catch (error) {
+    console.error('Erro ao salvar perfil:', error);
+    alert('Erro de conexão com o servidor');
+  }
+}
+
+// Lógica de Upload de Foto
+const changePhotoBtn = document.getElementById('changePhotoBtn');
+const uploadModal = document.getElementById('uploadModal');
+const imageInput = document.getElementById('imageInput');
+const cropImage = document.getElementById('cropImage');
+const cropContainer = document.getElementById('cropContainer');
+const cropButtons = document.getElementById('cropButtons');
+const fileInfo = document.getElementById('fileInfo');
+const errorMessage = document.getElementById('errorMessage');
+const successMessage = document.getElementById('successMessage');
+
+changePhotoBtn.onclick = () => {
+  uploadModal.classList.add('active');
+  resetModal();
+};
+
+function closeModal() {
+  uploadModal.classList.remove('active');
+  resetModal();
+}
+
+function resetModal() {
+  if (cropper) {
+    cropper.destroy();
+    cropper = null;
+  }
+  imageInput.value = '';
+  cropImage.src = '';
+  cropContainer.style.display = 'none';
+  cropButtons.style.display = 'none';
+  fileInfo.textContent = '';
+  errorMessage.textContent = '';
+  successMessage.textContent = '';
+}
+
+imageInput.onchange = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  // Validar tipo
+  if (!file.type.startsWith('image/')) {
+    errorMessage.textContent = 'Por favor, selecione uma imagem válida.';
+    return;
+  }
+
+  // Validar tamanho (5MB)
+  if (file.size > 5 * 1024 * 1024) {
+    errorMessage.textContent = 'A imagem deve ter no máximo 5MB.';
+    return;
+  }
+
+  selectedFile = file;
+  fileInfo.textContent = `Arquivo: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+  errorMessage.textContent = '';
+
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    cropImage.src = event.target.result;
+    cropContainer.style.display = 'block';
+    cropButtons.style.display = 'flex';
+
+    if (cropper) cropper.destroy();
+    
+    cropper = new Cropper(cropImage, {
+      aspectRatio: 1,
+      viewMode: 1,
+      guides: true,
+      center: true,
+      highlight: false,
+      cropBoxMovable: true,
+      cropBoxResizable: true,
+      toggleDragModeOnDblclick: false,
+    });
+  };
+  reader.readAsDataURL(file);
+};
+
+async function confirmCrop() {
+  if (!cropper) return;
+
+  const canvas = cropper.getCroppedCanvas({
+    width: 400,
+    height: 400,
+  });
+
+  canvas.toBlob(async (blob) => {
+    const formData = new FormData();
+    formData.append('profile_picture', blob, 'profile.jpg');
+
+    try {
+      successMessage.textContent = 'Enviando...';
+      
+      // ✅ CORREÇÃO: Usar authenticatedFetch com FormData
+      const response = await authGuard.authenticatedFetch('/api/user/profile-picture', {
+        method: 'POST',
+        body: formData
+      });
+
+      // ✅ CORREÇÃO: Verificar response.ok
+      if (!response.ok) {
+        const errorData = await response.json();
+        errorMessage.textContent = errorData.message || 'Erro ao enviar imagem';
+        successMessage.textContent = '';
+        return;
+      }
+
+      const result = await response.json();
+      successMessage.textContent = 'Foto atualizada com sucesso!';
+      
+      // ✅ CORREÇÃO: Normalizar URL da imagem
+      document.getElementById('profileAvatar').src = authGuard.normalizePictureUrl(result.picture);
+      
+      // ✅ CORREÇÃO: Atualizar usuário no auth guard
+      const updatedUser = await authGuard.fetchCurrentUser();
+      
+      setTimeout(closeModal, 1500);
+      
+    } catch (error) {
+      console.error('Erro no upload:', error);
+      errorMessage.textContent = 'Erro de conexão ao enviar imagem';
+      successMessage.textContent = '';
+    }
+  }, 'image/jpeg', 0.9);
+}
+
+window.onclick = (event) => {
+  if (event.target == uploadModal) {
+    closeModal();
+  }
+};
+</script>
+</body>
+</html>

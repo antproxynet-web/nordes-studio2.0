@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erro - Nordes Studio</title>
+    <link rel="shortcut icon" href="../assets/images/icons/fav.png" type="image/x-icon" />
+    <style>
+        :root {
+            --primary-accent: #009FFF;
+            --secondary-accent: #00d4ff;
+            --text-light: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --bg-darker: #030013;
+            --card-bg: rgba(42, 47, 74, 0.3);
+            --border-color: rgba(0, 212, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: var(--bg-darker);
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .error-container {
+            max-width: 500px;
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+        }
+
+        .error-illustration img {
+            width: 180px;
+            height: auto;
+            margin-bottom: 2rem;
+        }
+
+        .error-code {
+            font-size: 5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff, var(--primary-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .error-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .error-message {
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        .error-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn-error {
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-error:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-illustration">
+            <!-- Usando mascote500.png como padrão já que mascoteX.png não foi encontrado, mas referenciando conforme pedido se existir -->
+            <img src="erro-pages/imagens/mascotes/mascote500.png" alt="Mascote Nordes" id="error-mascot">
+        </div>
+
+        <h1 class="error-code" id="error-code">{{ code }}</h1>
+        <h2 class="error-title" id="error-title">{{ title }}</h2>
+        <p class="error-message" id="error-message">
+            {{ message }}
+        </p>
+
+        <div class="error-actions">
+            <a href="home.html" class="btn-error btn-primary">Voltar ao Início</a>
+            <a href="contato.html" class="btn-error btn-secondary">Suporte</a>
+        </div>
+    </div>
+
+    <script>
+        // O backend pode injetar os dados via template engine (como Jinja2) 
+        // ou podemos capturar via URL params se for um erro de frontend
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('code')) document.getElementById('error-code').innerText = urlParams.get('code');
+        if (urlParams.has('title')) document.getElementById('error-title').innerText = urlParams.get('title');
+        if (urlParams.has('message')) document.getElementById('error-message').innerText = urlParams.get('message');
+    </script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+/* ===== PÁGINA DE ERRO COM MASCOTE ===== */
+
+:root {
+    --primary-accent: #009FFF;
+    --secondary-accent: #00d4ff;
+    --text-light: #e0e0e0;
+    --text-muted: #a0a0a0;
+    --bg-dark: #000C1E;
+    --bg-darker: #042746;
+    --error-red: #DA0900;
+    --border-color: rgba(255, 255, 255, 0.2);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Georgia, 'Times New Roman', serif; /* fonte serifada consistente */
+    color: var(--text-light);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+
+    /* Fundo apenas com imagem */
+    background-image: url('../imagens/body/body.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.error-container {
+    max-width: 420px;
+    width: 100%;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.error-illustration {
+    margin-bottom: 1.5rem;
+    width: 150px;
+    height: 150px;
+}
+
+.error-illustration img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.error-code {
+    font-size: 5rem;
+    font-weight: 700;
+    background: linear-gradient(120deg, #6000B8, #7540FF, #0098FF);
+  -webkit-background-clip: text; /* Para Safari/Chrome */
+  -webkit-text-fill-color: transparent; /* Faz o texto pegar o gradiente */
+  background-clip: text; /* Para Firefox */
+  color: transparent; /* fallback */
+  font-weight: bold; /* opcional, deixa mais chamativo */
+    margin-bottom: 0.8rem;
+}
+
+.error-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 1rem;
+    text-decoration: underline;
+  text-decoration-color: #4F504E;
+  text-decoration-thickness: 3px; /* opcional, deixa mais grosso */
+}
+
+.error-title span {
+    color: var(--error-red);
+}
+
+.error-message {
+    font-size: 1.2rem;
+    color: #FF003E;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+}
+
+.error-actions {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-error {
+    padding: 0.7rem 1.5rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-primary {
+    background-color: #536876;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text-light);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background: rgba(255,255,255,0.05);
+    transform: translateY(-2px);
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .error-code { font-size: 4rem; }
+    .error-title { font-size: 1.3rem; }
+    .error-message { font-size: 0.95rem; }
+    .error-actions { flex-direction: column; gap: 0.5rem; }
+    .error-illustration { width: 120px; height: 120px; }
+}

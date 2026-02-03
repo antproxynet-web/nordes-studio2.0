@@ -1,0 +1,37 @@
+/* ESCALA GLOBAL */
+html {
+    font-size: 14.4px; /* 90% de 16px */
+}
+
+/* AJUSTE MOBILE ESTILO MERCADO LIVRE (MENOS ZOOM) */
+@media (max-width: 3068px) {
+    html {
+        font-size: 12px; /* Redução adicional para mobile */
+    }
+}
+
+@font-face {
+    font-family: "Horizon";
+    src: url("../../assets/font-horizon/CyberHorizon-ARAvL.ttf") format("truetype");
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-darker);
+    color: var(--text-light);
+    line-height: 1.6; /* Aumenta o line-height para melhor legibilidade */
+    overflow-x: hidden;
+    user-select: none; /* impede seleção de texto */
+}
+
+/* PADRONIZAÇÃO DA LOGO */
+.brand-text, .logo-text {
+    font-family: "Horizon", sans-serif !important;
+    font-size: 1.2rem !important;
+    background: linear-gradient(135deg, #fff, #009FFF) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    letter-spacing: 1px !important;
+    font-weight: normal !important;
+}

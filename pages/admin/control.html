@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <script src="../../assets/global/admin_guard.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Central de Controle - Nordes Studio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/style/control.css">
+    <link rel="stylesheet" href="../../assets/global/scroll.css">
+    <link rel="stylesheet" href="../../assets/global/global.css">
+</head>
+<body>
+    <div class="control-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-wrapper">
+                    <img src="../../assets/images/icons/logo.png" alt="Nordes Studio" class="logo">
+                </div>
+                <h1 class="brand-name">NORDES<br>COMMAND</h1>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#dashboard" class="nav-item active" data-section="dashboard">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#servers" class="nav-item" data-section="servers">
+                    <i class="fas fa-server"></i>
+                    <span>Servidores</span>
+                </a>
+                <a href="#analytics" class="nav-item" data-section="analytics">
+                    <i class="fas fa-analytics"></i>
+                    <span>Análiticas</span>
+                </a>
+                <a href="#database" class="nav-item" data-section="database">
+                    <i class="fas fa-database"></i>
+                    <span>Banco de Dados</span>
+                </a>
+                <a href="#users" class="nav-item" data-section="users">
+                    <i class="fas fa-users"></i>
+                    <span>Usuários</span>
+                </a>
+                <a href="#settings" class="nav-item" data-section="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Configurações</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="adm.html" class="quick-link">
+                    <i class="fas fa-th"></i>
+                    <span>Painel ADM</span>
+                </a>
+                <a href="../home.html" class="quick-link">
+                    <i class="fas fa-home"></i>
+                    <span>Loja</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="top-bar-left">
+                    <h2 id="page-title">Dashboard</h2>
+                    <p id="page-subtitle">Bem-vindo à central de controle</p>
+                </div>
+                <div class="top-bar-right">
+                    <div class="status-indicator">
+                        <div class="status-badge">
+                            <span class="status-dot" id="dot-front"></span>
+                            <span class="status-label">Frontend</span>
+                        </div>
+                        <div class="status-badge">
+                            <span class="status-dot" id="dot-back"></span>
+                            <span class="status-label">Backend</span>
+                        </div>
+                        <div class="status-badge">
+                            <span class="status-dot" id="dot-db"></span>
+                            <span class="status-label">Database</span>
+                        </div>
+                    </div>
+                    <div class="user-profile">
+                        <div class="avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <span>Admin</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Sections -->
+            <div class="content-area">
+                <!-- Dashboard Section -->
+                <section id="dashboard-section" class="content-section active">
+                    <!-- System Status Cards -->
+                    <div class="cards-grid">
+                        <div class="status-card">
+                            <div class="card-header">
+                                <h3>Servidor Backend</h3>
+                                <span class="status-badge-inline" id="backend-status">OFFLINE</span>
+                            </div>
+                            <div class="card-body">
+                                <p id="power-desc">Gerencie o estado do processo Flask em tempo real</p>
+                                <div class="card-stats">
+                                    <div class="stat">
+                                        <span class="stat-label">Uptime</span>
+                                        <span class="stat-value" id="uptime">--:--:--</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-label">Requisições/min</span>
+                                        <span class="stat-value">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-actions">
+                                <button id="btn-start" class="btn btn-success" onclick="power('start')">
+                                    <i class="fas fa-play"></i> Ligar
+                                </button>
+                                <button id="btn-stop" class="btn btn-danger" onclick="power('stop')">
+                                    <i class="fas fa-stop"></i> Desligar
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="status-card">
+                            <div class="card-header">
+                                <h3>Banco de Dados</h3>
+                                <span class="status-badge-inline">ONLINE</span>
+                            </div>
+                            <div class="card-body">
+                                <p>Conexão com banco de dados</p>
+                                <div class="card-stats">
+                                    <div class="stat">
+                                        <span class="stat-label">Conexões</span>
+                                        <span class="stat-value">12/50</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-label">Uso de Disco</span>
+                                        <span class="stat-value">2.4 GB</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-actions">
+                                <button class="btn btn-secondary">
+                                    <i class="fas fa-sync"></i> Sincronizar
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="status-card">
+                            <div class="card-header">
+                                <h3>Armazenamento</h3>
+                                <span class="status-badge-inline">OK</span>
+                            </div>
+                            <div class="card-body">
+                                <p>Espaço em disco disponível</p>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 65%"></div>
+                                </div>
+                                <div class="card-stats">
+                                    <div class="stat">
+                                        <span class="stat-label">Usado</span>
+                                        <span class="stat-value">65%</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-label">Disponível</span>
+                                        <span class="stat-value">35%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="status-card">
+                            <div class="card-header">
+                                <h3>Tráfego de Rede</h3>
+                                <span class="status-badge-inline">NORMAL</span>
+                            </div>
+                            <div class="card-body">
+                                <p>Monitoramento de rede em tempo real</p>
+                                <div class="card-stats">
+                                    <div class="stat">
+                                        <span class="stat-label">Upload</span>
+                                        <span class="stat-value">2.3 Mbps</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-label">Download</span>
+                                        <span class="stat-value">5.8 Mbps</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="quick-actions-section">
+                        <h3>Ações Rápidas</h3>
+                        <div class="quick-actions-grid">
+                            <a href="adm.html" class="quick-action-card">
+                                <div class="action-icon">
+                                    <i class="fas fa-th"></i>
+                                </div>
+                                <h4>Painel ADM</h4>
+                                <p>Controle de produtos e estoque</p>
+                            </a>
+                            <a href="status.html" class="quick-action-card">
+                                <div class="action-icon">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                                <h4>Métricas</h4>
+                                <p>Monitoramento técnico</p>
+                            </a>
+                            <a href="db_manager.html" class="quick-action-card">
+                                <div class="action-icon">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <h4>Banco de Dados</h4>
+                                <p>Gerenciar dados</p>
+                            </a>
+                            <a href="../../index.html" class="quick-action-card">
+                                <div class="action-icon">
+                                    <i class="fas fa-globe"></i>
+                                </div>
+                                <h4>Landing Page</h4>
+                                <p>Página institucional</p>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="activity-section">
+                        <h3>Atividade Recente</h3>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon success">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p class="activity-title">Servidor Backend iniciado</p>
+                                    <span class="activity-time">há 2 minutos</span>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon info">
+                                    <i class="fas fa-sync"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p class="activity-title">Sincronização de banco de dados</p>
+                                    <span class="activity-time">há 15 minutos</span>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon warning">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p class="activity-title">Uso de memória acima de 80%</p>
+                                    <span class="activity-time">há 1 hora</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Servers Section (Placeholder) -->
+                <section id="servers-section" class="content-section">
+                    <div class="placeholder-section">
+                        <i class="fas fa-server"></i>
+                        <h3>Gerenciamento de Servidores</h3>
+                        <p>Visualize e controle todos os servidores da rede</p>
+                    </div>
+                </section>
+
+                <!-- Analytics Section (Placeholder) -->
+                <section id="analytics-section" class="content-section">
+                    <div class="placeholder-section">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Análiticas Avançadas</h3>
+                        <p>Gráficos e relatórios detalhados do sistema</p>
+                    </div>
+                </section>
+
+                <!-- Database Section (Placeholder) -->
+                <section id="database-section" class="content-section">
+                    <div class="placeholder-section">
+                        <i class="fas fa-database"></i>
+                        <h3>Gerenciador de Banco de Dados</h3>
+                        <p>Backups, snapshots e gerenciamento de tabelas</p>
+                    </div>
+                </section>
+
+                <!-- Users Section (Placeholder) -->
+                <section id="users-section" class="content-section">
+                    <div class="placeholder-section">
+                        <i class="fas fa-users"></i>
+                        <h3>Gerenciamento de Usuários</h3>
+                        <p>Controle de permissões e acesso</p>
+                    </div>
+                </section>
+
+                <!-- Settings Section (Placeholder) -->
+                <section id="settings-section" class="content-section">
+                    <div class="placeholder-section">
+                        <i class="fas fa-cog"></i>
+                        <h3>Configurações do Sistema</h3>
+                        <p>Personalize as configurações da central</p>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../assets/script/control.js"></script>
+</body>
+</html>

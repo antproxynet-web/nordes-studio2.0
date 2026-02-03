@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <script src="../../assets/global/admin_guard.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Conta - Nordes Studio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/style/central.css">
+    <link rel="stylesheet" href="../../assets/global/scroll.css">
+    <link rel="stylesheet" href="../../assets/global/global.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-left">
+            <a href="../home.html" class="logo">
+                <img src="../../assets/images/icons/logo.png" alt="Nordes">
+                <span>Nordes Studio</span>
+            </a>
+        </div>
+        <nav class="header-nav">
+            <a href="central.html" class="nav-link active">
+                <i class="fas fa-user"></i>
+                <span>Minha Conta</span>
+            </a>
+            <a href="control.html" class="nav-link">
+                <i class="fas fa-sliders-h"></i>
+                <span>Controle</span>
+            </a>
+            <a href="adm.html" class="nav-link">
+                <i class="fas fa-th"></i>
+                <span>Admin</span>
+            </a>
+            <a href="../home.html" class="nav-link logout">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Sair</span>
+            </a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Profile Header -->
+        <section class="profile-header">
+            <div class="profile-cover"></div>
+            <div class="profile-info">
+                <div class="profile-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="profile-details">
+                    <h1>Administrador</h1>
+                    <p class="profile-email">admin@nordesstudio.com</p>
+                    <div class="profile-stats">
+                        <div class="stat">
+                            <span class="stat-number">12</span>
+                            <span class="stat-label">Produtos</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">48</span>
+                            <span class="stat-label">Pedidos</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">156</span>
+                            <span class="stat-label">Clientes</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-edit-profile">
+                    <i class="fas fa-edit"></i> Editar Perfil
+                </button>
+            </div>
+        </section>
+
+        <!-- Content Grid -->
+        <div class="content-grid">
+            <!-- Left Column -->
+            <div class="left-column">
+                <!-- Account Settings Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>
+                            <i class="fas fa-cog"></i> Configurações da Conta
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="settings-item">
+                            <div class="settings-info">
+                                <h3>Email da Conta</h3>
+                                <p>admin@nordesstudio.com</p>
+                            </div>
+                            <button class="btn-secondary">
+                                <i class="fas fa-pencil-alt"></i> Alterar
+                            </button>
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-info">
+                                <h3>Telefone</h3>
+                                <p>(11) 98765-4321</p>
+                            </div>
+                            <button class="btn-secondary">
+                                <i class="fas fa-pencil-alt"></i> Alterar
+                            </button>
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-info">
+                                <h3>Localização</h3>
+                                <p>São Paulo, SP - Brasil</p>
+                            </div>
+                            <button class="btn-secondary">
+                                <i class="fas fa-pencil-alt"></i> Alterar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>
+                            <i class="fas fa-shield-alt"></i> Segurança
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="security-item">
+                            <div class="security-info">
+                                <h3>Autenticação em Dois Fatores</h3>
+                                <p>Adicione uma camada extra de segurança</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="two-factor">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-info">
+                                <h3>Sessões Ativas</h3>
+                                <p>Gerencie seus dispositivos conectados</p>
+                            </div>
+                            <button class="btn-secondary">
+                                <i class="fas fa-list"></i> Ver Sessões
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Change Password Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>
+                            <i class="fas fa-lock"></i> Alterar Senha
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <form id="password-form" class="password-form">
+                            <div class="form-group">
+                                <label for="old-password">Senha Atual</label>
+                                <div class="password-input-wrapper">
+                                    <input type="password" id="old-password" placeholder="Digite sua senha atual" required>
+                                    <button type="button" class="toggle-password" onclick="togglePassword(this)">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="new-password">Nova Senha</label>
+                                <div class="password-input-wrapper">
+                                    <input type="password" id="new-password" placeholder="Mínimo 6 caracteres" required>
+                                    <button type="button" class="toggle-password" onclick="togglePassword(this)">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div class="password-strength">
+                                    <div class="strength-bar" id="strength-bar"></div>
+                                </div>
+                                <p class="password-hint" id="password-hint">Mínimo 6 caracteres</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirm-password">Confirmar Senha</label>
+                                <div class="password-input-wrapper">
+                                    <input type="password" id="confirm-password" placeholder="Confirme sua nova senha" required>
+                                    <button type="button" class="toggle-password" onclick="togglePassword(this)">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-save"></i> Salvar Nova Senha
+                            </button>
+                            <div id="form-message" class="message"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="right-column">
+                <!-- Quick Actions Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>
+                            <i class="fas fa-bolt"></i> Ações Rápidas
+                        </h2>
+                    </div>
+                    <div class="card-body quick-actions">
+                        <a href="adm.html" class="quick-action">
+                            <div class="action-icon">
+                                <i class="fas fa-th"></i>
+                            </div>
+                            <span>Painel Admin</span>
+                        </a>
+                        <a href="control.html" class="quick-action">
+                            <div class="action-icon">
+                                <i class="fas fa-sliders-h"></i>
+                            </div>
+                            <span>Controle</span>
+                        </a>
+                        <a href="db_manager.html" class="quick-action">
+                            <div class="action-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <span>BD Manager</span>
+                        </a>
+                        <a href="status.html" class="quick-action">
+                            <div class="action-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <span>Status</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Recent Activity Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>
+                            <i class="fas fa-history"></i> Atividade Recente
+                        </h2>
+                    </div>
+                    <div class="card-body activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon success">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="activity-details">
+                                <p class="activity-title">Novo produto adicionado</p>
+                                <span class="activity-time">há 2 horas</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon info">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="activity-details">
+                                <p class="activity-title">Novo pedido recebido</p>
+                                <span class="activity-time">há 5 horas</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon warning">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </div>
+                            <div class="activity-details">
+                                <p class="activity-title">Estoque baixo em alguns itens</p>
+                                <span class="activity-time">há 1 dia</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon success">
+                                <i class="fas fa-sync"></i>
+                            </div>
+                            <div class="activity-details">
+                                <p class="activity-title">Backup realizado com sucesso</p>
+                                <span class="activity-time">há 2 dias</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>
+                            <i class="fas fa-bell"></i> Notificações
+                        </h2>
+                    </div>
+                    <div class="card-body notifications">
+                        <label class="notification-item">
+                            <input type="checkbox" checked>
+                            <span>Novos pedidos</span>
+                        </label>
+                        <label class="notification-item">
+                            <input type="checkbox" checked>
+                            <span>Atualizações de estoque</span>
+                        </label>
+                        <label class="notification-item">
+                            <input type="checkbox" checked>
+                            <span>Alertas de segurança</span>
+                        </label>
+                        <label class="notification-item">
+                            <input type="checkbox">
+                            <span>Newsletter</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Danger Zone Card -->
+                <div class="card danger">
+                    <div class="card-header">
+                        <h2>
+                            <i class="fas fa-exclamation-triangle"></i> Zona de Perigo
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="danger-text">Estas ações são irreversíveis. Use com cuidado.</p>
+                        <button class="btn-danger">
+                            <i class="fas fa-trash"></i> Limpar Cache
+                        </button>
+                        <button class="btn-danger">
+                            <i class="fas fa-sync"></i> Resetar Dados
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../../assets/script/central.js"></script>
+</body>
+</html>

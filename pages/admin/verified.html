@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerenciamento de Verificados - Nordes</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+    --bg: #0C071C;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --line: rgba(255, 255, 255, 0.1);
+    --text: #ffffff;
+    --muted: rgba(255, 255, 255, 0.6);
+    --accent: #009DFF;
+    --success: #2ecc71;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.back-btn {
+    color: #fff;
+    text-decoration: none;
+    font-size: 20px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--card-bg);
+    border-radius: 50%;
+}
+
+h1 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.search-container {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.search-container i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+}
+
+#searchInput {
+    width: 100%;
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px 12px 12px 45px;
+    color: #fff;
+    outline: none;
+    font-size: 14px;
+}
+
+.user-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.user-card {
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: 15px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-info {
+    flex: 1;
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 2px;
+}
+
+.user-email {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.user-id {
+    font-size: 10px;
+    color: var(--muted);
+    opacity: 0.5;
+}
+
+/* Toggle Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #333;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--success);
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
+}
+
+.loading, .error-msg {
+    text-align: center;
+    padding: 40px;
+    color: var(--muted);
+}
+
+.error-msg {
+    color: #ff4757;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <a href="adm.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+    <h1>Gerenciar Verificados</h1>
+</div>
+
+<div class="search-container">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" id="searchInput" placeholder="Buscar por nome ou email...">
+</div>
+
+<div id="userList" class="user-list">
+    <div class="loading">Carregando usuários...</div>
+</div>
+
+<script src="../../assets/js/auth-guard.js"></script>
+<script>
+let allUsers = [];
+
+async function loadUsers() {
+    const userList = document.getElementById('userList');
+    try {
+        // Usar caminho absoluto para garantir funcionamento
+        const response = await authGuard.authenticatedFetch('/api/admin/users');
+        if (!response.ok) throw new Error('Falha ao carregar');
+        
+        allUsers = await response.json();
+        // Ordenar alfabeticamente
+        allUsers.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+        renderUsers(allUsers);
+    } catch (error) {
+        userList.innerHTML = `<div class="error-msg">Erro ao carregar usuários. Verifique se você é admin.</div>`;
+        console.error(error);
+    }
+}
+
+function renderUsers(users) {
+    const userList = document.getElementById('userList');
+    if (users.length === 0) {
+        userList.innerHTML = '<div class="loading">Nenhum usuário encontrado.</div>';
+        return;
+    }
+
+    userList.innerHTML = users.map(user => `
+        <div class="user-card">
+            <label class="switch">
+                <input type="checkbox" ${user.is_verified ? 'checked' : ''} onchange="toggleVerify(${user.id}, this.checked)">
+                <span class="slider"></span>
+            </label>
+            <div class="user-info">
+                <div class="user-name">${user.name || 'Sem Nome'} ${user.is_verified ? '<i class="fa-solid fa-circle-check" style="color: #009DFF; font-size: 12px;"></i>' : ''}</div>
+                <div class="user-email">${user.email}</div>
+                <div class="user-id">ID: ${user.id}</div>
+            </div>
+        </div>
+    `).join('');
+}
+
+async function toggleVerify(userId, isVerified) {
+    const url = isVerified
+        ? `/api/admin/verify-user/${userId}`
+        : `/api/admin/unverify-user/${userId}`;
+
+    const response = await authGuard.authenticatedFetch(url, {
+        method: 'POST'
+    });
+
+    if (!response.ok) {
+        alert('Erro ao atualizar status');
+    }
+}
+
+document.getElementById('searchInput').addEventListener('input', (e) => {
+    const term = e.target.value.toLowerCase();
+    const filtered = allUsers.filter(u => 
+        (u.name && u.name.toLowerCase().includes(term)) || 
+        u.email.toLowerCase().includes(term)
+    );
+    renderUsers(filtered);
+});
+
+// Iniciar imediatamente
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadUsers);
+} else {
+    loadUsers();
+}
+</script>
+
+</body>
+</html>
